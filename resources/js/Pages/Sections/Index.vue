@@ -65,7 +65,7 @@ const closeModal = () => {
                                         Supprimer
                                     </button>
                                     <button
-                                        class="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-red-800 focus:ring-opacity-50 transition ease-in-out duration-150"
+                                        class="px-4 py-2 bg-blue-950 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-red-800 focus:ring-opacity-50 transition ease-in-out duration-150"
                                     >
                                         <Link
                                             :href="
@@ -83,7 +83,7 @@ const closeModal = () => {
 
                 <div class="mt-6 text-center">
                     <Link
-                        class="text-white bg-blue-500 px-4 py-2 font-semibold rounded-lg hover:bg-blue-700 hover:text-white transition duration-300 ease-in-out"
+                        class="text-white bg-blue-800 px-4 py-2 font-semibold rounded-lg hover:bg-blue-700 hover:text-white transition duration-300 ease-in-out"
                         :href="route('sections.create')"
                     >
                         Créer une nouvelle section
