@@ -1,7 +1,3 @@
-<script setup>
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-</script>
-
 <template>
     <div>
         <div class="bg-gray-200 bg-opacity-25 grid grid-cols-1 md:grid-cols-1 gap-4 lg:gap-6 p-8 lg:p-10">
