@@ -21,9 +21,9 @@ const form = useForm({
     name: props.student.name,
     surname: props.student.surname,
     email: props.student.email,
-    section: props.sections.length > 0 ? props.sections[0].id : null,
-    section2: props.sections.length > 0 ? props.sections[1].id : null,
-    section3: props.sections.length > 0 ? props.sections[2].id : null,
+    section: props.sections.length > 0 ? props.sections[0]?.id : null,
+    section2: props.sections.length > 0 ? props.sections[1]?.id : null,
+    section3: props.sections.length > 0 ? props.sections[2]?.id : null,
 });
 
 console.log("Nombre de sections:", props.sections.length);
@@ -143,6 +143,7 @@ const sendForm = () => {
                                 :value="section.id"
                                 :selected="
                                     props.sections.length > 1 &&
+                                    props.sections[1] !== undefined &&
                                     section.id === props.sections[1].section_id
                                 "
                             >
