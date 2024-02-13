@@ -7,10 +7,19 @@ import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
+import { ref } from "vue";
+
+const props = defineProps({
+    courses: Array,
+    course: Object,
+});
 
 const form = useForm({
     _method: "POST",
     name: "",
+    course: "",
+    course2: "",
+    course3: "",
 });
 
 const sendForm = () => {
@@ -21,6 +30,7 @@ const sendForm = () => {
         },
     });
 };
+// console.log(courses); // Ajout du console.log pour afficher le contenu de la variable courses
 </script>
 
 <template>
@@ -43,7 +53,7 @@ const sendForm = () => {
                 <template #form>
                     <!-- Champs de formulaire -->
                     <div class="col-span-6 sm:col-span-4">
-                        <InputLabel for="name" value="Name" />
+                        <InputLabel for="name" value="name" />
                         <TextInput
                             id="name"
                             type="text"
@@ -51,6 +61,78 @@ const sendForm = () => {
                             v-model="form.name"
                         />
                         <InputError :message="form.errors.name" class="mt-2" />
+                    </div>
+
+                    <div class="col-span-6 sm:col-span-4">
+                        <InputLabel for="course" value="Course" />
+                        <select
+                            id="course"
+                            class="mt-1 block w-full"
+                            v-model="form.course"
+                        >
+                            <option value="">Select a course</option>
+                            <!-- Boucle sur les courses disponibles pour la sélection -->
+                            <option
+                                v-for="course in courses"
+                                :key="course.id"
+                                :value="course.id"
+                            >
+                                {{ course.id }}
+                                {{ course.name }}
+                            </option>
+                        </select>
+                        <InputError
+                            :message="form.errors.course"
+                            class="mt-2"
+                        />
+                    </div>
+
+                    <div class="col-span-6 sm:col-span-4">
+                        <InputLabel for="course2" value="Course 2" />
+                        <select
+                            id="course2"
+                            class="mt-1 block w-full"
+                            v-model="form.course2"
+                        >
+                            <option value="">Select a course</option>
+                            <!-- Boucle sur les courses disponibles pour la sélection -->
+                            <option
+                                v-for="course in courses"
+                                :key="course.id"
+                                :value="course.id"
+                            >
+                                {{ course.id }}
+                                {{ course.name }}
+                            </option>
+                        </select>
+                        <InputError
+                            :message="form.errors.course2"
+                            class="mt-2"
+                        />
+                    </div>
+
+                    <div class="col-span-6 sm:col-span-4">
+                        <InputLabel for="course3" value="Course 3" />
+                        <select
+                            id="course3"
+                            class="mt-1 block w-full"
+                            v-model="form.course3"
+                        >
+                            <option value="">Select a course</option>
+                            <!-- Boucle sur les courses disponibles pour la sélection -->
+                            <option
+                                v-for="course in courses"
+                                :key="course.id"
+                                :value="course.id"
+                            >
+                                {{ course.id }}
+                                {{ course.name }}
+                            </option>
+                        </select>
+                        <InputError
+                            :message="form.errors.course3"
+                            class="mt-2"
+                        />
                     </div>
                 </template>
 
@@ -68,5 +150,6 @@ const sendForm = () => {
                 </template>
             </FormSection>
         </div>
+        <pre>{{ course }}</pre>
     </AppLayout>
 </template>

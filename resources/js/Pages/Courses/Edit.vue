@@ -2,7 +2,7 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link, router, useForm } from "@inertiajs/vue3";
 import ActionMessage from "@/Components/ActionMessage.vue";
-import FormCourse from "@/Components/FormCourse.vue";
+import formSection from "@/Components/formSection.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
@@ -19,8 +19,6 @@ const props = defineProps({
 const form = useForm({
     _method: "PUT",
     name: props.section.name,
-    surname: props.section.surname,
-    email: props.section.email,
     course: props.courses.length > 0 ? props.courses[0]?.id : null,
     course2: props.courses.length > 0 ? props.courses[1]?.id : null,
     course3: props.courses.length > 0 ? props.courses[2]?.id : null,
@@ -55,7 +53,7 @@ const sendForm = () => {
         </template>
 
         <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-            <FormCourse @submitted="sendForm">
+            <formSection @submitted="sendForm">
                 <template #title> Modification d'une section </template>
 
                 <template #description>
@@ -73,31 +71,6 @@ const sendForm = () => {
                             v-model="form.name"
                         />
                         <InputError :message="form.errors.name" class="mt-2" />
-                    </div>
-
-                    <div class="col-span-6 sm:col-span-4">
-                        <InputLabel for="surname" value="Surname" />
-                        <TextInput
-                            id="surname"
-                            type="text"
-                            class="mt-1 block w-full"
-                            v-model="form.surname"
-                        />
-                        <InputError
-                            :message="form.errors.surname"
-                            class="mt-2"
-                        />
-                    </div>
-
-                    <div class="col-span-6 sm:col-span-4">
-                        <InputLabel for="email" value="Email" />
-                        <TextInput
-                            id="email"
-                            type="email"
-                            class="mt-1 block w-full"
-                            v-model="form.email"
-                        />
-                        <InputError :message="form.errors.email" class="mt-2" />
                     </div>
 
                     <div class="col-span-6 sm:col-span-4">
@@ -198,7 +171,7 @@ const sendForm = () => {
                         Save
                     </PrimaryButton>
                 </template>
-            </FormCourse>
+            </formSection>
         </div>
     </AppLayout>
 </template>

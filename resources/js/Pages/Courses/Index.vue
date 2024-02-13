@@ -36,6 +36,8 @@ const deleteSection = () => {
 const closeModal = () => {
     confirmingSectionDeletion.value = false;
 };
+
+console.log(courses); // Ajout du console.log pour afficher le contenu de la variable courses
 </script>
 
 <template>
