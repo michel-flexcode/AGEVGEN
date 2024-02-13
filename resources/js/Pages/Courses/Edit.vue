@@ -2,7 +2,7 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link, router, useForm } from "@inertiajs/vue3";
 import ActionMessage from "@/Components/ActionMessage.vue";
-import formSection from "@/Components/formSection.vue";
+import FormSection from "@/Components/FormSection.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
@@ -18,7 +18,7 @@ const props = defineProps({
 
 const form = useForm({
     _method: "PUT",
-    name: props.section.name,
+    Name: props.section.Name,
     course: props.courses.length > 0 ? props.courses[0]?.id : null,
     course2: props.courses.length > 0 ? props.courses[1]?.id : null,
     course3: props.courses.length > 0 ? props.courses[2]?.id : null,
@@ -53,7 +53,7 @@ const sendForm = () => {
         </template>
 
         <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-            <formSection @submitted="sendForm">
+            <FormSection @submitted="sendForm">
                 <template #title> Modification d'une section </template>
 
                 <template #description>
@@ -92,7 +92,7 @@ const sendForm = () => {
                                 "
                             >
                                 {{ course.id }}
-                                {{ course.Name }}
+                                {{ course.name }}
                             </option>
                         </select>
                         <InputError
@@ -171,7 +171,7 @@ const sendForm = () => {
                         Save
                     </PrimaryButton>
                 </template>
-            </formSection>
+            </FormSection>
         </div>
     </AppLayout>
 </template>

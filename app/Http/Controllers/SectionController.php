@@ -41,19 +41,28 @@ class SectionController extends Controller
 
     public function store(Request $request)
     {
+
         // Validation des données de la requête
         $validateData = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'course' => ['required', 'exists:courses,id'],
             'course2' => ['nullable', 'numeric', 'exists:courses,id'],
             'course3' => ['nullable', 'numeric', 'exists:courses,id'],
+            'course4' => ['nullable', 'numeric', 'exists:courses,id'],
+            'course5' => ['nullable', 'numeric', 'exists:courses,id'],
+            'course6' => ['nullable', 'numeric', 'exists:courses,id'],
+            'course7' => ['nullable', 'numeric', 'exists:courses,id'],
+            'course8' => ['nullable', 'numeric', 'exists:courses,id'],
+            'course9' => ['nullable', 'numeric', 'exists:courses,id'],
+            'course10' => ['nullable', 'numeric', 'exists:courses,id'],
+            'course11' => ['nullable', 'numeric', 'exists:courses,id'],
+            'course12' => ['nullable', 'numeric', 'exists:courses,id'],
         ]);
 
         $section = Section::create([
             'name' => $request->input('name'),
-            'surname' => $request->input('surname'),
-            'email' => $request->input('email'),
         ]);
+
 
         // Création des associations avec les courses
         $sectionCourse1 = new SectionCourse([
@@ -76,6 +85,78 @@ class SectionController extends Controller
                 'course_id' => $validateData['course3'],
             ]);
             $sectionCourse3->save();
+        }
+
+        if (isset($validateData['course4'])) {
+            $sectionCourse4 = new SectionCourse([
+                'section_id' => $section->id,
+                'course_id' => $validateData['course4'],
+            ]);
+            $sectionCourse4->save();
+        }
+
+        if (isset($validateData['course5'])) {
+            $sectionCourse5 = new SectionCourse([
+                'section_id' => $section->id,
+                'course_id' => $validateData['course5'],
+            ]);
+            $sectionCourse5->save();
+        }
+
+        if (isset($validateData['course6'])) {
+            $sectionCourse6 = new SectionCourse([
+                'section_id' => $section->id,
+                'course_id' => $validateData['course6'],
+            ]);
+            $sectionCourse6->save();
+        }
+
+        if (isset($validateData['course7'])) {
+            $sectionCourse7 = new SectionCourse([
+                'section_id' => $section->id,
+                'course_id' => $validateData['course7'],
+            ]);
+            $sectionCourse7->save();
+        }
+
+        if (isset($validateData['course8'])) {
+            $sectionCourse8 = new SectionCourse([
+                'section_id' => $section->id,
+                'course_id' => $validateData['course8'],
+            ]);
+            $sectionCourse8->save();
+        }
+
+        if (isset($validateData['course9'])) {
+            $sectionCourse9 = new SectionCourse([
+                'section_id' => $section->id,
+                'course_id' => $validateData['course9'],
+            ]);
+            $sectionCourse9->save();
+        }
+
+        if (isset($validateData['course10'])) {
+            $sectionCourse10 = new SectionCourse([
+                'section_id' => $section->id,
+                'course_id' => $validateData['course10'],
+            ]);
+            $sectionCourse10->save();
+        }
+
+        if (isset($validateData['course11'])) {
+            $sectionCourse11 = new SectionCourse([
+                'section_id' => $section->id,
+                'course_id' => $validateData['course11'],
+            ]);
+            $sectionCourse11->save();
+        }
+
+        if (isset($validateData['course12'])) {
+            $sectionCourse12 = new SectionCourse([
+                'section_id' => $section->id,
+                'course_id' => $validateData['course12'],
+            ]);
+            $sectionCourse12->save();
         }
 
         // Message flash
@@ -124,15 +205,25 @@ class SectionController extends Controller
     {
         // Validation des données de la requête
         $validateData = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'Name' => ['required', 'string', 'max:255'],
             'course' => ['required', 'exists:courses,id'],
             'course2' => ['nullable', 'numeric', 'exists:courses,id'],
             'course3' => ['nullable', 'numeric', 'exists:courses,id'],
+            'course4' => ['nullable', 'numeric', 'exists:courses,id'],
+            'course5' => ['nullable', 'numeric', 'exists:courses,id'],
+            'course6' => ['nullable', 'numeric', 'exists:courses,id'],
+            'course7' => ['nullable', 'numeric', 'exists:courses,id'],
+            'course8' => ['nullable', 'numeric', 'exists:courses,id'],
+            'course9' => ['nullable', 'numeric', 'exists:courses,id'],
+            'course10' => ['nullable', 'numeric', 'exists:courses,id'],
+            'course11' => ['nullable', 'numeric', 'exists:courses,id'],
+            'course12' => ['nullable', 'numeric', 'exists:courses,id'],
         ]);
+
 
         // Mise à jour des champs du modèle Section
         $section->update([
-            'name' => $validateData['name'],
+            'name' => $validateData['Name'],
         ]);
 
         SectionCourse::where(
@@ -146,6 +237,15 @@ class SectionController extends Controller
             $validateData['course'],
             $validateData['course2'] ?? null,
             $validateData['course3'] ?? null,
+            $validateData['course4'] ?? null,
+            $validateData['course5'] ?? null,
+            $validateData['course6'] ?? null,
+            $validateData['course7'] ?? null,
+            $validateData['course8'] ?? null,
+            $validateData['course9'] ?? null,
+            $validateData['course10'] ?? null,
+            $validateData['course11'] ?? null,
+            $validateData['course12'] ?? null,
         ];
 
         foreach ($sectionCourses as $index => $courseId) {
