@@ -53,6 +53,7 @@ const closeModal = () => {
                         <div class="px-4 py-4 sm:px-6">
                             <div class="flex items-center justify-between">
                                 <Link :href="route('sections.edit', section)">
+                                    {{ section.id }}
                                     {{ section.Name }}
                                 </Link>
                                 <div class="space-x-4">

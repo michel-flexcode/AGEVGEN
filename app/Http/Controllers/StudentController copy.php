@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
+use App\Models\SectionCourse;
 use App\Models\Section;
-use App\Models\StudentSection;
-use App\Models\Student;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class StudentController extends Controller
+class SectionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $students = Student::query()->get();
+        $sections = Section::query()->get();
 
-        return Inertia::render('Students/Index', [
-            'students' => $students
+        return Inertia::render('Sections/Index', [
+            'sections' => $sections
         ]);
     }
 
@@ -28,10 +28,10 @@ class StudentController extends Controller
 
     public function create()
     {
-        // Suppose que $sections contient une liste de sections à fournir à la vue
-        $sections = Section::all();
-        return Inertia::render('Students/Create', [
-            'sections' => $sections,
+        // Suppose que $courses contient une liste de courses à fournir à la vue
+        $courses = Course::all();
+        return Inertia::render('Sections/Create', [
+            'courses' => $courses,
         ]);
     }
 
@@ -44,51 +44,47 @@ class StudentController extends Controller
         // Validation des données de la requête
         $validateData = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'surname' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'unique:students'],
-            'section' => ['required', 'exists:sections,id'],
-            'section2' => ['nullable', 'numeric', 'exists:sections,id'],
-            'section3' => ['nullable', 'numeric', 'exists:sections,id'],
+            'course' => ['required', 'exists:courses,id'],
+            'course2' => ['nullable', 'numeric', 'exists:courses,id'],
+            'course3' => ['nullable', 'numeric', 'exists:courses,id'],
         ]);
 
-        $student = Student::create([
+        $section = Section::create([
             'name' => $request->input('name'),
-            'surname' => $request->input('surname'),
-            'email' => $request->input('email'),
         ]);
 
-        // Création des associations avec les sections
-        $studentSection1 = new StudentSection([
-            'student_id' => $student->id,
-            'section_id' => $validateData['section'],
+        // Création des associations avec les courses
+        $sectionCourse1 = new SectionCourse([
+            'section_id' => $section->id,
+            'course_id' => $validateData['course'],
         ]);
-        $studentSection1->save();
+        $sectionCourse1->save();
 
-        if (isset($validateData['section2'])) {
-            $studentSection2 = new StudentSection([
-                'student_id' => $student->id,
-                'section_id' => $validateData['section2'],
+        if (isset($validateData['course2'])) {
+            $sectionCourse2 = new SectionCourse([
+                'section_id' => $section->id,
+                'course_id' => $validateData['course2'],
             ]);
-            $studentSection2->save();
+            $sectionCourse2->save();
         }
 
-        if (isset($validateData['section3'])) {
-            $studentSection3 = new StudentSection([
-                'student_id' => $student->id,
-                'section_id' => $validateData['section3'],
+        if (isset($validateData['course3'])) {
+            $sectionCourse3 = new SectionCourse([
+                'section_id' => $section->id,
+                'course_id' => $validateData['course3'],
             ]);
-            $studentSection3->save();
+            $sectionCourse3->save();
         }
 
         // Message flash
-        session()->flash('flash.banner', 'La student a été ajoutée!');
+        session()->flash('flash.banner', 'La section a été ajoutée!');
     }
 
 
     /**
      * Display the specified resource.
      */
-    public function show(Student $student)
+    public function show(Section $section)
     {
         // useless
     }
@@ -98,22 +94,22 @@ class StudentController extends Controller
      */
 
 
-    public function edit(Student $student)
+    public function edit(Section $section)
     {
         // Récupérez les données de l'étudiant
-        $student = Student::find($student->id);
-        // Récupérez les sections associées à l'étudiant
-        $sections = Section::whereHas('students', function ($query) use ($student) {
-            $query->where('students.id', $student->id);
+        $section = Section::find($section->id);
+        // Récupérez les courses associées à l'étudiant
+        $courses = Course::whereHas('sections', function ($query) use ($section) {
+            $query->where('sections.id', $section->id);
         })->get();
 
-        // Récupérez toutes les sections disponibles
-        $allSections = Section::all();
+        // Récupérez toutes les courses disponibles
+        $allCourses = Course::all();
 
-        return Inertia::render('Students/Edit', [
-            'student' => $student,
-            'sections' => $sections,
-            'allSections' => $allSections,
+        return Inertia::render('Sections/Edit', [
+            'section' => $section,
+            'courses' => $courses,
+            'allCourses' => $allCourses,
         ]);
     }
 
@@ -122,57 +118,57 @@ class StudentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Student $student)
+    public function update(Request $request, Section $section)
     {
         // Validation des données de la requête
         $validateData = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'surname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email'],
-            'section' => ['required', 'exists:sections,id'],
-            'section2' => ['nullable', 'numeric', 'exists:sections,id'],
-            'section3' => ['nullable', 'numeric', 'exists:sections,id'],
+            'course' => ['required', 'exists:courses,id'],
+            'course2' => ['nullable', 'numeric', 'exists:courses,id'],
+            'course3' => ['nullable', 'numeric', 'exists:courses,id'],
         ]);
 
-        // Mise à jour des champs du modèle Student
-        $student->update([
+        // Mise à jour des champs du modèle Section
+        $section->update([
             'name' => $validateData['name'],
             'surname' => $validateData['surname'],
             'email' => $validateData['email'],
         ]);
 
-        StudentSection::where(
-            'student_id',
-            $student->id
+        SectionCourse::where(
+            'section_id',
+            $section->id
         )->delete();
 
 
-        // Mettre à jour les associations avec les sections
-        $studentSections = [
-            $validateData['section'],
-            $validateData['section2'] ?? null,
-            $validateData['section3'] ?? null,
+        // Mettre à jour les associations avec les courses
+        $sectionCourses = [
+            $validateData['course'],
+            $validateData['course2'] ?? null,
+            $validateData['course3'] ?? null,
         ];
 
-        foreach ($studentSections as $index => $sectionId) {
-            if ($sectionId) {
-                $studentSection = StudentSection::where('student_id', $student->id)
-                    ->where('section_id', $sectionId)
+        foreach ($sectionCourses as $index => $courseId) {
+            if ($courseId) {
+                $sectionCourse = SectionCourse::where('section_id', $section->id)
+                    ->where('course_id', $courseId)
                     ->first();
 
-                if ($studentSection) {
+                if ($sectionCourse) {
                     // Mettre à jour l'entrée existante
-                    $studentSection->update([
-                        'student_id' => $student->id,
-                        'section_id' => $sectionId,
+                    $sectionCourse->update([
+                        'section_id' => $section->id,
+                        'course_id' => $courseId,
                     ]);
                 } else {
                     // Créer une nouvelle entrée
-                    $studentSection = new StudentSection([
-                        'student_id' => $student->id,
-                        'section_id' => $sectionId,
+                    $sectionCourse = new SectionCourse([
+                        'section_id' => $section->id,
+                        'course_id' => $courseId,
                     ]);
-                    $studentSection->save();
+                    $sectionCourse->save();
                 }
             }
         }
@@ -181,7 +177,7 @@ class StudentController extends Controller
         session()->flash('flash.banner', 'Les informations de l\'étudiant ont été mises à jour!');
 
         // Redirige vers la liste des étudiants
-        return redirect()->route('students.index');
+        return redirect()->route('sections.index');
     }
 
 
@@ -192,26 +188,26 @@ class StudentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Student $student)
+    public function destroy(Section $section)
     {
-        $student->delete();
-        session()->flash('flash.banner', 'La student a été détruite!');
+        $section->delete();
+        session()->flash('flash.banner', 'La section a été détruite!');
 
-        return redirect()->route('students.index');
-        // return Inertia::render('Students/Delete', [
-        //     'student' => $student,
+        return redirect()->route('sections.index');
+        // return Inertia::render('Sections/Delete', [
+        //     'section' => $section,
         // ]);
-        // return redirect()->route('students.index');
+        // return redirect()->route('sections.index');
     }
 
-    public function deletetest(Student $student)
+    public function deletetest(Section $section)
     {
-        // $student->delete();
-        // session()->flash('flash.banner', 'La student a été détruite!');
+        // $section->delete();
+        // session()->flash('flash.banner', 'La section a été détruite!');
 
-        // return redirect()->route('students.index');
-        return Inertia::render('Students/Delete', [
-            'student' => $student,
+        // return redirect()->route('sections.index');
+        return Inertia::render('Sections/Delete', [
+            'section' => $section,
         ]);
     }
 }
