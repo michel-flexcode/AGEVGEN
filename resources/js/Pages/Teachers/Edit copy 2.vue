@@ -11,8 +11,6 @@ import TextInput from "@/Components/TextInput.vue";
 const props = defineProps({
     teacher: Object,
     courses: Object,
-    allCourses: Array,
-    allCourses: Object,
 });
 
 const form = useForm({
@@ -20,7 +18,7 @@ const form = useForm({
     name: props.teacher.name,
     surname: props.teacher.surname,
     email: props.teacher.email,
-    course1: props.teacher.course1,
+    course: props.teacher.course,
     course2: props.teacher.course2,
     course3: props.teacher.course3,
     course4: props.teacher.course4,
@@ -112,12 +110,14 @@ const sendForm = () => {
                                 <option value="">Select a course</option>
                                 <!-- Loop through all courses for selection -->
                                 <option
-                                    v-for="course in allCourses"
-                                    :key="course.id"
-                                    :value="course.id"
+                                    v-for="(courseName, courseId) in courses"
+                                    :key="courseId"
+                                    :value="courseId"
+                                    :selected="
+                                        courseId === form[`course${index}`]
+                                    "
                                 >
-                                    {{ course.id }}
-                                    {{ course.name }}
+                                    {{ courseName }}
                                 </option>
                             </select>
                             <InputError

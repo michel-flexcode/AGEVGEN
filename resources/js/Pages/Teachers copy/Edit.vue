@@ -10,9 +10,6 @@ import TextInput from "@/Components/TextInput.vue";
 
 const props = defineProps({
     teacher: Object,
-    courses: Object,
-    allCourses: Array,
-    allCourses: Object,
 });
 
 const form = useForm({
@@ -20,18 +17,6 @@ const form = useForm({
     name: props.teacher.name,
     surname: props.teacher.surname,
     email: props.teacher.email,
-    course1: props.teacher.course1,
-    course2: props.teacher.course2,
-    course3: props.teacher.course3,
-    course4: props.teacher.course4,
-    course5: props.teacher.course5,
-    course6: props.teacher.course6,
-    course7: props.teacher.course7,
-    course8: props.teacher.course8,
-    course9: props.teacher.course9,
-    course10: props.teacher.course10,
-    course11: props.teacher.course11,
-    course12: props.teacher.course12,
 });
 
 const sendForm = () => {
@@ -97,47 +82,18 @@ const sendForm = () => {
                         />
                         <InputError :message="form.errors.email" class="mt-2" />
                     </div>
-
-                    <template v-for="index in 12" :key="index">
-                        <div class="col-span-6 sm:col-span-4">
-                            <InputLabel
-                                :for="`course${index}`"
-                                :value="`Course ${index}`"
-                            />
-                            <select
-                                :id="`course${index}`"
-                                class="mt-1 block w-full"
-                                v-model="form[`course${index}`]"
-                            >
-                                <option value="">Select a course</option>
-                                <!-- Loop through all courses for selection -->
-                                <option
-                                    v-for="course in allCourses"
-                                    :key="course.id"
-                                    :value="course.id"
-                                >
-                                    {{ course.id }}
-                                    {{ course.name }}
-                                </option>
-                            </select>
-                            <InputError
-                                :message="form.errors[`course${index}`]"
-                                class="mt-2"
-                            />
-                        </div>
-                    </template>
                 </template>
 
                 <template #actions>
                     <ActionMessage :on="form.recentlySuccessful" class="me-3">
-                        Sauvegardé.
+                        Saved.
                     </ActionMessage>
 
                     <PrimaryButton
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"
                     >
-                        Sauvegarder
+                        Save
                     </PrimaryButton>
                 </template>
             </FormSection>

@@ -14,6 +14,18 @@ class Teacher extends Model
         'name',
         'surname',
         'email',
+        'course1',
+        'course2',
+        'course3',
+        'course4',
+        'course5',
+        'course6',
+        'course7',
+        'course8',
+        'course9',
+        'course10',
+        'course11',
+        'course12',
     ];
 
 
