@@ -64,7 +64,7 @@ const logout = () => {
                                     :href="route('Evaluation')"
                                     :active="route().current('Evaluation')"
                                 >
-                                    Evaluation
+                                    Évaluations
                                 </NavLink>
                                 <NavLink
                                     :href="route('questions.index')"
@@ -76,19 +76,19 @@ const logout = () => {
                                     :href="route('students.index')"
                                     :active="route().current('students.index')"
                                 >
-                                    Students
+                                    Étudiants
                                 </NavLink>
                                 <NavLink
                                     :href="route('teachers.index')"
                                     :active="route().current('teachers.index')"
                                 >
-                                    Teachers
+                                    Enseignants
                                 </NavLink>
                                 <NavLink
                                     :href="route('courses.index')"
                                     :active="route().current('courses.index')"
                                 >
-                                    Courses
+                                    Cours
                                 </NavLink>
                                 <NavLink
                                     :href="route('sections.index')"
