@@ -9,31 +9,31 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 
 const props = defineProps({
-    courses: Array,
-    course: Object,
+    teacher: Object,
+    courses: Object,
 });
 
 const form = useForm({
-    _method: "POST",
-    name: "",
-    surname: "",
-    email: "",
-    course1: "",
-    course2: "",
-    course3: "",
-    course4: "",
-    course5: "",
-    course6: "",
-    course7: "",
-    course8: "",
-    course9: "",
-    course10: "",
-    course11: "",
-    course12: "",
+    _method: "PUT",
+    name: props.teacher.name,
+    surname: props.teacher.surname,
+    email: props.teacher.email,
+    course: props.teacher.course,
+    course2: props.teacher.course2,
+    course3: props.teacher.course3,
+    course4: props.teacher.course4,
+    course5: props.teacher.course5,
+    course6: props.teacher.course6,
+    course7: props.teacher.course7,
+    course8: props.teacher.course8,
+    course9: props.teacher.course9,
+    course10: props.teacher.course10,
+    course11: props.teacher.course11,
+    course12: props.teacher.course12,
 });
 
 const sendForm = () => {
-    form.post(route("teachers.store"), {
+    form.put(route("teachers.update", props.teacher), {
         preserveScroll: true,
         onSuccess: () => {
             form.reset();
@@ -46,21 +46,20 @@ const sendForm = () => {
     <AppLayout title="Teachers">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Ajouter un enseignant
+                Modifier une teacher
             </h2>
         </template>
 
         <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
             <FormSection @submitted="sendForm">
-                <template #title> Création d'un enseignant </template>
+                <template #title> Modification d'une teacher </template>
 
                 <template #description>
-                    Les enseignants seront reprises sur le formulaire pour les
+                    Les teachers seront reprises sur le formulaire pour les
                     étudiants
                 </template>
 
                 <template #form>
-                    <!-- Champs de formulaire -->
                     <div class="col-span-6 sm:col-span-4">
                         <InputLabel for="name" value="Name" />
                         <TextInput
@@ -98,25 +97,25 @@ const sendForm = () => {
                     </div>
 
                     <div class="col-span-6 sm:col-span-4">
-                        <InputLabel for="course1" value="Course 1" />
+                        <InputLabel for="course" value="Course" />
                         <select
-                            id="course1"
+                            id="course"
                             class="mt-1 block w-full"
-                            v-model="form.course1"
+                            v-model="form.course"
                         >
                             <option value="">Select a course</option>
-                            <!-- Boucle sur les courses disponibles pour la sélection -->
+                            <!-- Loop through all courses for selection -->
                             <option
-                                v-for="course in courses"
-                                :key="course.id"
-                                :value="course.id"
+                                v-for="(courseName, courseId) in courses"
+                                :key="courseId"
+                                :value="courseId"
+                                :selected="courseId === form.course"
                             >
-                                {{ course.id }}
-                                {{ course.name }}
+                                {{ courseName }}
                             </option>
                         </select>
                         <InputError
-                            :message="form.errors.course1"
+                            :message="form.errors.course"
                             class="mt-2"
                         />
                     </div>
@@ -129,11 +128,16 @@ const sendForm = () => {
                             v-model="form.course2"
                         >
                             <option value="">Select a course</option>
-                            <!-- Boucle sur les courses disponibles pour la sélection -->
+                            <!-- Boucle sur toutes les courses pour la sélection -->
                             <option
-                                v-for="course in courses"
+                                v-for="course in allCourses"
                                 :key="course.id"
                                 :value="course.id"
+                                :selected="
+                                    props.courses.length > 1 &&
+                                    props.courses[1] !== undefined &&
+                                    course.id === props.courses[1].course_id
+                                "
                             >
                                 {{ course.id }}
                                 {{ course.name }}
@@ -153,11 +157,16 @@ const sendForm = () => {
                             v-model="form.course3"
                         >
                             <option value="">Select a course</option>
-                            <!-- Boucle sur les courses disponibles pour la sélection -->
+                            <!-- Boucle sur toutes les courses pour la sélection -->
                             <option
-                                v-for="course in courses"
+                                v-for="course in allCourses"
                                 :key="course.id"
                                 :value="course.id"
+                                :selected="
+                                    props.courses.length > 2 &&
+                                    props.courses[2] !== undefined &&
+                                    course.id === props.courses[2].course_id
+                                "
                             >
                                 {{ course.id }}
                                 {{ course.name }}
@@ -177,11 +186,16 @@ const sendForm = () => {
                             v-model="form.course4"
                         >
                             <option value="">Select a course</option>
-                            <!-- Boucle sur les courses disponibles pour la sélection -->
+                            <!-- Boucle sur toutes les courses pour la sélection -->
                             <option
-                                v-for="course in courses"
+                                v-for="course in allCourses"
                                 :key="course.id"
                                 :value="course.id"
+                                :selected="
+                                    props.courses.length > 3 &&
+                                    props.courses[3] !== undefined &&
+                                    course.id === props.courses[3].course_id
+                                "
                             >
                                 {{ course.id }}
                                 {{ course.name }}
@@ -201,11 +215,16 @@ const sendForm = () => {
                             v-model="form.course5"
                         >
                             <option value="">Select a course</option>
-                            <!-- Boucle sur les courses disponibles pour la sélection -->
+                            <!-- Boucle sur toutes les courses pour la sélection -->
                             <option
-                                v-for="course in courses"
+                                v-for="course in allCourses"
                                 :key="course.id"
                                 :value="course.id"
+                                :selected="
+                                    props.courses.length > 4 &&
+                                    props.courses[4] !== undefined &&
+                                    course.id === props.courses[4].course_id
+                                "
                             >
                                 {{ course.id }}
                                 {{ course.name }}
@@ -225,11 +244,16 @@ const sendForm = () => {
                             v-model="form.course6"
                         >
                             <option value="">Select a course</option>
-                            <!-- Boucle sur les courses disponibles pour la sélection -->
+                            <!-- Boucle sur toutes les courses pour la sélection -->
                             <option
-                                v-for="course in courses"
+                                v-for="course in allCourses"
                                 :key="course.id"
                                 :value="course.id"
+                                :selected="
+                                    props.courses.length > 5 &&
+                                    props.courses[5] !== undefined &&
+                                    course.id === props.courses[5].course_id
+                                "
                             >
                                 {{ course.id }}
                                 {{ course.name }}
@@ -249,11 +273,16 @@ const sendForm = () => {
                             v-model="form.course7"
                         >
                             <option value="">Select a course</option>
-                            <!-- Boucle sur les courses disponibles pour la sélection -->
+                            <!-- Boucle sur toutes les courses pour la sélection -->
                             <option
-                                v-for="course in courses"
+                                v-for="course in allCourses"
                                 :key="course.id"
                                 :value="course.id"
+                                :selected="
+                                    props.courses.length > 6 &&
+                                    props.courses[6] !== undefined &&
+                                    course.id === props.courses[6].course_id
+                                "
                             >
                                 {{ course.id }}
                                 {{ course.name }}
@@ -273,11 +302,16 @@ const sendForm = () => {
                             v-model="form.course8"
                         >
                             <option value="">Select a course</option>
-                            <!-- Boucle sur les courses disponibles pour la sélection -->
+                            <!-- Boucle sur toutes les courses pour la sélection -->
                             <option
-                                v-for="course in courses"
+                                v-for="course in allCourses"
                                 :key="course.id"
                                 :value="course.id"
+                                :selected="
+                                    props.courses.length > 7 &&
+                                    props.courses[7] !== undefined &&
+                                    course.id === props.courses[7].course_id
+                                "
                             >
                                 {{ course.id }}
                                 {{ course.name }}
@@ -288,7 +322,6 @@ const sendForm = () => {
                             class="mt-2"
                         />
                     </div>
-
                     <div class="col-span-6 sm:col-span-4">
                         <InputLabel for="course9" value="Course 9" />
                         <select
@@ -297,11 +330,16 @@ const sendForm = () => {
                             v-model="form.course9"
                         >
                             <option value="">Select a course</option>
-                            <!-- Boucle sur les courses disponibles pour la sélection -->
+                            <!-- Boucle sur toutes les courses pour la sélection -->
                             <option
-                                v-for="course in courses"
+                                v-for="course in allCourses"
                                 :key="course.id"
                                 :value="course.id"
+                                :selected="
+                                    props.courses.length > 8 &&
+                                    props.courses[8] !== undefined &&
+                                    course.id === props.courses[8].course_id
+                                "
                             >
                                 {{ course.id }}
                                 {{ course.name }}
@@ -321,11 +359,16 @@ const sendForm = () => {
                             v-model="form.course10"
                         >
                             <option value="">Select a course</option>
-                            <!-- Boucle sur les courses disponibles pour la sélection -->
+                            <!-- Boucle sur toutes les courses pour la sélection -->
                             <option
-                                v-for="course in courses"
+                                v-for="course in allCourses"
                                 :key="course.id"
                                 :value="course.id"
+                                :selected="
+                                    props.courses.length > 9 &&
+                                    props.courses[9] !== undefined &&
+                                    course.id === props.courses[9].course_id
+                                "
                             >
                                 {{ course.id }}
                                 {{ course.name }}
@@ -345,11 +388,16 @@ const sendForm = () => {
                             v-model="form.course11"
                         >
                             <option value="">Select a course</option>
-                            <!-- Boucle sur les courses disponibles pour la sélection -->
+                            <!-- Boucle sur toutes les courses pour la sélection -->
                             <option
-                                v-for="course in courses"
+                                v-for="course in allCourses"
                                 :key="course.id"
                                 :value="course.id"
+                                :selected="
+                                    props.courses.length > 10 &&
+                                    props.courses[10] !== undefined &&
+                                    course.id === props.courses[10].course_id
+                                "
                             >
                                 {{ course.id }}
                                 {{ course.name }}
@@ -369,11 +417,16 @@ const sendForm = () => {
                             v-model="form.course12"
                         >
                             <option value="">Select a course</option>
-                            <!-- Boucle sur les courses disponibles pour la sélection -->
+                            <!-- Boucle sur toutes les courses pour la sélection -->
                             <option
-                                v-for="course in courses"
+                                v-for="course in allCourses"
                                 :key="course.id"
                                 :value="course.id"
+                                :selected="
+                                    props.courses.length > 11 &&
+                                    props.courses[11] !== undefined &&
+                                    course.id === props.courses[11].course_id
+                                "
                             >
                                 {{ course.id }}
                                 {{ course.name }}
@@ -388,14 +441,14 @@ const sendForm = () => {
 
                 <template #actions>
                     <ActionMessage :on="form.recentlySuccessful" class="me-3">
-                        Saved.
+                        Sauvegardé.
                     </ActionMessage>
 
                     <PrimaryButton
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"
                     >
-                        Save
+                        Sauvegarder
                     </PrimaryButton>
                 </template>
             </FormSection>

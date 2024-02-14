@@ -81,7 +81,7 @@ class StudentController extends Controller
         }
 
         // Message flash
-        session()->flash('flash.banner', 'La student a été ajoutée!');
+        session()->flash('flash.banner', 'Un étudiant a été ajouté!');
     }
 
 

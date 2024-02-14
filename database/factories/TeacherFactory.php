@@ -21,6 +21,7 @@ class TeacherFactory extends Factory
             'name' => $this->faker->word(),
             'surname' => $this->faker->word(),
             'email' => $this->faker->unique()->safeEmail(),
+            'course1' => $this->faker->numberBetween(1, 100),
         ];
     }
 }
