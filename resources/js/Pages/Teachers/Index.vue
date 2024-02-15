@@ -88,7 +88,7 @@ const closeModal = () => {
                         class="text-white bg-blue-800 px-4 py-2 font-semibold rounded-lg hover:bg-blue-700 hover:text-white transition duration-300 ease-in-out"
                         :href="route('teachers.create')"
                     >
-                        Créer une nouvelle teacher
+                        Créer un nouvel enseignant
                     </Link>
                 </div>
             </div>
@@ -96,10 +96,10 @@ const closeModal = () => {
     </AppLayout>
 
     <DialogModal :show="confirmingTeacherDeletion" @close="closeModal">
-        <template #title> Supprimer la teacher </template>
+        <template #title> Supprimer l'enseignant </template>
 
         <template #content>
-            Êtes-vous sûr de vouloir supprimer cette teacher ? Cette action est
+            Êtes-vous sûr de vouloir supprimer cet enseignant ? Cette action est
             irréversible.
         </template>
 

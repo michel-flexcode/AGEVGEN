@@ -40,4 +40,14 @@ class Course extends Model
     {
         return $this->hasMany(Evaluation::class);
     }
+
+
+    // public function scopeFilter($query, array $filters)
+    // {
+    //     $query->when($filters['name'] ?? null, function ($query, $name) {
+    //         $query->where('name', 'like', '%' . $name . '%');
+    //     });
+
+    //     return $query;
+    // }
 }
