@@ -11,14 +11,18 @@ class CourseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $courses = Course::query()->get();
 
+    //https://github.com/Code-Plank/laravel-inertia-vue3/blob/main/app/Http/Controllers/BlogController.php
+    public function index(Request $request)
+    {
+        $courses = Course::orderBy('name', 'ASC')->paginate(8);
+        // dd($courses);
         return Inertia::render('Courses/Index', [
-            'courses' => $courses
+            'courses' => $courses,
         ]);
     }
+
+
 
     /**
      * Show the form for creating a new resource.

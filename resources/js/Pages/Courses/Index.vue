@@ -1,15 +1,20 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
-import { Link, router, useForm } from "@inertiajs/vue3";
+import { Head, Link, router, useForm, usePage } from "@inertiajs/vue3";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import DialogModal from "@/Components/DialogModal.vue";
+import Pagination from "@/Components/Pagination.vue";
 import { ref } from "vue";
+import { defineProps } from "vue";
 
 const props = defineProps({
     courses: Array,
     course: Object,
+    coursesList: Object,
 });
+
+console.log(props.courses);
 
 //ajout bloc delete
 const confirmingCourseDeletion = ref(false);
@@ -46,12 +51,11 @@ const closeModal = () => {
                 <ul
                     class="bg-white rounded-lg shadow overflow-hidden divide-y divide-gray-200"
                 >
-                    <li v-for="course in courses" :key="course.id">
+                    <li v-for="course in courses.data" :key="course.id">
                         <div class="px-4 py-4 sm:px-6">
                             <div class="flex items-center justify-between">
                                 <Link :href="route('courses.edit', course)">
-                                    {{ course.id }} -
-                                    {{ course.name }}
+                                    {{ course.id }} - {{ course.name }}
                                 </Link>
                                 <div class="space-x-4">
                                     <button
@@ -78,6 +82,11 @@ const closeModal = () => {
                         </div>
                     </li>
                 </ul>
+                <!-- <pagination class="mt-6" :links="coursesList.links" /> -->
+                <!-- https://github.com/Code-Plank/laravel-inertia-vue3/blob/main/resources/js/Pages/Blog/Index.vue -->
+                <!-- <pagination class="mt-6" :links="props.blogs.links" /> -->
+                <!-- <pagination class="mt-6" :links="props.courses.links" /> -->
+                <pagination class="mt-6" :links="courses.links" />
 
                 <div class="mt-6 text-center">
                     <Link
@@ -112,4 +121,45 @@ const closeModal = () => {
             </DangerButton>
         </template>
     </DialogModal>
+
+    <!--  <ul
+                    class="bg-white rounded-lg shadow overflow-hidden divide-y divide-gray-200"
+                >
+
+                    <li v-for="course in courses" :key="course.id">
+                        <div class="px-4 py-4 sm:px-6">
+                            <div class="flex items-center justify-between">
+                                <Link :href="route('courses.edit', course)">
+                                    {{ course.id }} -
+                                    {{ course.name }}
+                                </Link>
+                                <div class="space-x-4">
+                                    <button
+                                        @click.prevent="
+                                            confirmCourseDeletion(course.id)
+                                        "
+                                        class="px-4 py-2 bg-red-600 text-white font-semibold rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-800 focus:ring-opacity-50 transition ease-in-out duration-150"
+                                    >
+                                        Supprimer
+                                    </button>
+                                    <button
+                                        class="px-4 py-2 bg-blue-950 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-red-800 focus:ring-opacity-50 transition ease-in-out duration-150"
+                                    >
+                                        <Link
+                                            :href="
+                                                route('courses.edit', course)
+                                            "
+                                        >
+                                            Edit
+                                        </Link>
+                                    </button>
+                                <-- </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul> -->
+    <!-- <pagination class="mt-6" :links="coursesList.links" /> -->
+    <!-- https://github.com/Code-Plank/laravel-inertia-vue3/blob/main/resources/js/Pages/Blog/Index.vue -->
+    <!-- <pagination class="mt-6" :links="props.blogs.links" /> -->
+    <!-- <pagination class="mt-6" :links="props.courses.links" /> -->
 </template>
