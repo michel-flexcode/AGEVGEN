@@ -12,12 +12,22 @@ class TeacherController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $teachers = Teacher::query()->get();
+    // public function index()
+    // {
+    //     $teachers = Teacher::query()->get();
 
+    //     return Inertia::render('Teachers/Index', [
+    //         'teachers' => $teachers
+    //     ]);
+    // }
+
+    //https://github.com/Code-Plank/laravel-inertia-vue3/blob/main/app/Http/Controllers/BlogController.php
+    public function index(Request $request)
+    {
+        $teachers = Teacher::orderBy('name', 'ASC')->paginate(8);
+        // dd($teachers);
         return Inertia::render('Teachers/Index', [
-            'teachers' => $teachers
+            'teachers' => $teachers,
         ]);
     }
 

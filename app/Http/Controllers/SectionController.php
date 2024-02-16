@@ -13,14 +13,18 @@ class SectionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $sections = Section::query()->get();
 
+    //https://github.com/Code-Plank/laravel-inertia-vue3/blob/main/app/Http/Controllers/BlogController.php
+    public function index(Request $request)
+    {
+        $sections = Section::orderBy('name', 'ASC')->paginate(8);
+        // dd($courses);
         return Inertia::render('Sections/Index', [
-            'sections' => $sections
+            'sections' => $sections,
         ]);
     }
+
+
 
     /**
      * Show the form for creating a new resource.

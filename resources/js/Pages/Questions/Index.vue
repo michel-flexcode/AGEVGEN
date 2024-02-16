@@ -4,11 +4,12 @@ import { Link, router, useForm } from "@inertiajs/vue3";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import DialogModal from "@/Components/DialogModal.vue";
+import Pagination from "@/Components/Pagination.vue";
 import { ref } from "vue";
 
 const props = defineProps({
     questions: Array,
-    question: Object,
+    questions: Object,
 });
 
 //ajout bloc delete
@@ -49,7 +50,7 @@ const closeModal = () => {
                 <ul
                     class="bg-white rounded-lg shadow overflow-hidden divide-y divide-gray-200"
                 >
-                    <li v-for="question in questions" :key="question.id">
+                    <li v-for="question in questions.data" :key="question.id">
                         <div class="px-4 py-4 sm:px-6">
                             <div class="flex items-center justify-between">
                                 <Link :href="route('questions.edit', question)">
@@ -83,6 +84,7 @@ const closeModal = () => {
                         </div>
                     </li>
                 </ul>
+                <pagination class="mt-6" :links="questions.links" />
 
                 <div class="mt-6 text-center">
                     <Link
