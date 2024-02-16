@@ -17,6 +17,38 @@ class QuestionSeeder extends Seeder
             'label' => "Combien de chats avez-vous ?",
             'type' => 'libre',
         ]);
+        Question::create([
+            'label' => "Combien de chats avez-vous ?",
+            'type' => 'libre',
+        ]);
+        Question::create([
+            'label' => "Combien de chats avez-vous ?",
+            'type' => 'libre',
+        ]);
+        Question::create([
+            'label' => "Combien de chats avez-vous ?",
+            'type' => 'libre',
+        ]);
+        Question::create([
+            'label' => "Combien de chats avez-vous ?",
+            'type' => 'libre',
+        ]);
+        Question::create([
+            'label' => "Combien de chats avez-vous ?",
+            'type' => 'libre',
+        ]);
+        Question::create([
+            'label' => "Combien de chats avez-vous ?",
+            'type' => 'libre',
+        ]);
+        Question::create([
+            'label' => "Combien de chats avez-vous ?",
+            'type' => 'libre',
+        ]);
+        Question::create([
+            'label' => "Combien de chats avez-vous ?",
+            'type' => 'libre',
+        ]);
 
         Question::create([
             'label' => "Si oui, quel age a-t-il ?",

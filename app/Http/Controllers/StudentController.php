@@ -13,12 +13,14 @@ class StudentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $students = Student::query()->get();
 
+    //https://github.com/Code-Plank/laravel-inertia-vue3/blob/main/app/Http/Controllers/BlogController.php
+    public function index(Request $request)
+    {
+        $students = Student::orderBy('name', 'ASC')->paginate(8);
+        // dd($courses);
         return Inertia::render('Students/Index', [
-            'students' => $students
+            'students' => $students,
         ]);
     }
 

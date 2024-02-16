@@ -4,11 +4,12 @@ import { Link, router, useForm } from "@inertiajs/vue3";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import DialogModal from "@/Components/DialogModal.vue";
+import Pagination from "@/Components/Pagination.vue";
 import { ref } from "vue";
 
 const props = defineProps({
     sections: Array,
-    section: Object,
+    sections: Object,
 });
 
 //ajout bloc delete
@@ -49,7 +50,7 @@ const closeModal = () => {
                 <ul
                     class="bg-white rounded-lg shadow overflow-hidden divide-y divide-gray-200"
                 >
-                    <li v-for="section in sections" :key="section.id">
+                    <li v-for="section in sections.data" :key="section.id">
                         <div class="px-4 py-4 sm:px-6">
                             <div class="flex items-center justify-between">
                                 <Link :href="route('sections.edit', section)">
@@ -81,7 +82,7 @@ const closeModal = () => {
                         </div>
                     </li>
                 </ul>
-
+                <pagination class="mt-6" :links="sections.links" />
                 <div class="mt-6 text-center">
                     <Link
                         class="text-white bg-blue-800 px-4 py-2 font-semibold rounded-lg hover:bg-blue-700 hover:text-white transition duration-300 ease-in-out"
