@@ -6,6 +6,23 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
+# AGEVGEN - Application de Gestion des Évaluations des Enseignements
+
+AGEVGEN est une application dédiée à la gestion des évaluations des cours par les étudiants. Elle offre plusieurs fonctionnalités clés :
+
+## Création de Formulaires
+- Permet aux administrateurs de créer des formulaires personnalisés pour évaluer les enseignements offerts par différents professeurs.
+
+## Distribution Automatique
+- Les questionnaires conçus peuvent être envoyés automatiquement aux élèves qui ont participé aux cours concernés.
+
+## Gestion des Questions
+- L'administrateur peut ajouter de nouvelles questions aux formulaires, permettant ainsi la création de divers questionnaires adaptés à chaque besoin.
+
+## Collecte et Analyse des Données
+- Offre la possibilité de recueillir les réponses des étudiants et de les compiler dans un tableau pour une analyse approfondie.
+
+AGEVGEN vise à simplifier le processus d'évaluation des cours, en rendant la collecte et l'analyse des feedbacks étudiants à la fois efficace et organisée.
 
 ## About Laravel
 
