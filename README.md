@@ -33,7 +33,7 @@ Laravel is accessible, powerful, and provides tools required for large, robust a
 
 1. **Cloner le Projet GitHub**
 
-   Ouvrez un terminal et clonez le dépôt en utilisant le lien HTTPS que vous avez. Remplacez `<lien_https>` par le lien réel du projet GitHub :
+   Ouvrez un terminal et clonez le dépôt en utilisant le lien HTTPS que vous avez. Remplacez `<git@github.com:michel-flexcode/AGEVGEN.git>` par le lien réel du projet GitHub :
 
 2. **Naviguer dans le Répertoire du Projet**
 
