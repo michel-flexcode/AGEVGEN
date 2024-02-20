@@ -2,19 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\Speciality;
+use App\Models\FormulaireQuestion;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class SpecialitySeeder extends Seeder
+class FormulaireQuestionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Speciality::factory()
-            ->count(50)
-            ->create();
+        FormulaireQuestion::factory()->count(14)->create();
     }
 }

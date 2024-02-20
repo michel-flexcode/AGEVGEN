@@ -3,10 +3,10 @@
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\SectionController;
-use App\Http\Controllers\SpecialityController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\EvaluationController;
+use App\Http\Controllers\FormulaireController;
 use App\Http\Controllers\TeacherController;
-use App\Models\Speciality;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -52,7 +52,8 @@ Route::middleware([
     Route::resource('/students', StudentController::class);
     Route::resource('/courses', CourseController::class);
     Route::resource('/sections', SectionController::class);
-    Route::resource('/specialities', SpecialityController::class);
+    Route::resource('/evaluations', EvaluationController::class);
+    Route::resource('/formulaires', FormulaireController::class);
 
     Route::get('questions/delete/{question}', [QuestionController::class, 'deletetest']);
 });

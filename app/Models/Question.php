@@ -13,4 +13,9 @@ class Question extends Model
         'label',
         'type',
     ];
+
+    public function formulaires()
+    {
+        return $this->belongsToMany(Formulaire::class, 'formulaire_questions');
+    }
 }

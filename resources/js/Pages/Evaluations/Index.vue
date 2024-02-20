@@ -8,33 +8,33 @@ import Pagination from "@/Components/Pagination.vue";
 import { ref } from "vue";
 
 const props = defineProps({
-    teachers: Object,
+    evaluations: Object,
 });
 
 //ajout bloc delete
-const confirmingTeacherDeletion = ref(false);
-const teacherIdToDelete = ref(null);
-const formDeleteTeacher = useForm("delete", {});
+const confirmingEvaluationDeletion = ref(false);
+const evaluationIdToDelete = ref(null);
+const formDeleteEvaluation = useForm("delete", {});
 
-const confirmTeacherDeletion = (id) => {
-    teacherIdToDelete.value = id;
-    confirmingTeacherDeletion.value = true;
+const confirmEvaluationDeletion = (id) => {
+    evaluationIdToDelete.value = id;
+    confirmingEvaluationDeletion.value = true;
 };
 
-const deleteTeacher = () => {
-    formDeleteTeacher.delete(
-        route("teachers.destroy", teacherIdToDelete.value),
+const deleteEvaluation = () => {
+    formDeleteEvaluation.delete(
+        route("evaluations.destroy", evaluationIdToDelete.value),
         {
             preserveScroll: true,
             onSuccess: () => {
-                confirmingTeacherDeletion.value = false;
+                confirmingEvaluationDeletion.value = false;
             },
         }
     );
 };
 
 const closeModal = () => {
-    confirmingTeacherDeletion.value = false;
+    confirmingEvaluationDeletion.value = false;
 };
 </script>
 
@@ -43,7 +43,7 @@ const closeModal = () => {
         <div class="bg-gray-100 py-6">
             <header class="text-center mb-8">
                 <h2 class="text-2xl font-semibold text-gray-800">
-                    Enseignants
+                    Evaluations
                 </h2>
             </header>
 
@@ -51,18 +51,25 @@ const closeModal = () => {
                 <ul
                     class="bg-white rounded-lg shadow overflow-hidden divide-y divide-gray-200"
                 >
-                    <li v-for="teacher in teachers.data" :key="teacher.id">
+                    <li
+                        v-for="evaluation in evaluations.data"
+                        :key="evaluation.id"
+                    >
                         <div class="px-4 py-4 sm:px-6">
                             <div class="flex items-center justify-between">
-                                <Link :href="route('teachers.edit', teacher)">
-                                    {{ teacher.name }}
-                                    {{ teacher.surname }}
-                                    {{ teacher.email }}
+                                <Link
+                                    :href="
+                                        route('evaluations.edit', evaluation)
+                                    "
+                                >
+                                    {{ evaluation.id }}
                                 </Link>
                                 <div class="space-x-4">
                                     <button
                                         @click.prevent="
-                                            confirmTeacherDeletion(teacher.id)
+                                            confirmEvaluationDeletion(
+                                                evaluation.id
+                                            )
                                         "
                                         class="px-4 py-2 bg-red-600 text-white font-semibold rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-800 focus:ring-opacity-50 transition ease-in-out duration-150"
                                     >
@@ -73,7 +80,10 @@ const closeModal = () => {
                                     >
                                         <Link
                                             :href="
-                                                route('teachers.edit', teacher)
+                                                route(
+                                                    'evaluations.edit',
+                                                    evaluation
+                                                )
                                             "
                                         >
                                             Edit
@@ -84,12 +94,12 @@ const closeModal = () => {
                         </div>
                     </li>
                 </ul>
-                <pagination class="mt-6" :links="teachers.links" />
+                <pagination class="mt-6" :links="evaluations.links" />
 
                 <div class="mt-6 text-center">
                     <Link
                         class="text-white bg-blue-800 px-4 py-2 font-semibold rounded-lg hover:bg-blue-700 hover:text-white transition duration-300 ease-in-out"
-                        :href="route('teachers.create')"
+                        :href="route('evaluations.create')"
                     >
                         Créer un nouvel enseignant
                     </Link>
@@ -98,11 +108,11 @@ const closeModal = () => {
         </div>
     </AppLayout>
 
-    <DialogModal :show="confirmingTeacherDeletion" @close="closeModal">
-        <template #title> Supprimer l'enseignant </template>
+    <DialogModal :show="confirmingEvaluationDeletion" @close="closeModal">
+        <template #title> Supprimer le formulaire </template>
 
         <template #content>
-            Êtes-vous sûr de vouloir supprimer cet enseignant ? Cette action est
+            Êtes-vous sûr de vouloir supprimer ce formulaire ? Cette action est
             irréversible.
         </template>
 
@@ -111,9 +121,11 @@ const closeModal = () => {
 
             <DangerButton
                 class="ms-3"
-                :class="{ 'opacity-25': confirmingTeacherDeletion.processing }"
-                :disabled="confirmingTeacherDeletion.processing"
-                @click="deleteTeacher"
+                :class="{
+                    'opacity-25': confirmingEvaluationDeletion.processing,
+                }"
+                :disabled="confirmingEvaluationDeletion.processing"
+                @click="deleteEvaluation"
             >
                 Supprimer
             </DangerButton>
