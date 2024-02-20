@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\FormulaireQuestion;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -24,13 +25,14 @@ class DatabaseSeeder extends Seeder
             CourseSeeder::class,
             SectionSeeder::class,
             StudentSeeder::class,
-            SpecialitySeeder::class,
             TeacherSeeder::class,
             EvaluationSeeder::class,
             StudentSectionSeeder::class,
             StudentCourseSeeder::class,
-            TeacherSpecialitySeeder::class,
             SectionCourseSeeder::class,
+            FormulaireSeeder::class,
+            FormulaireQuestionSeeder::class,
+
         ]);
     }
 }

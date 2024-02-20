@@ -43,129 +43,158 @@ class SectionController extends Controller
      * Store a newly created resource in storage.
      */
 
+    // public function store(Request $request)
+    // {
+
+    //     // Validation des données de la requête
+    //     $validateData = $request->validate([
+    //         'name' => ['required', 'string', 'max:255'],
+    //         'course' => ['required', 'exists:courses,id'],
+    //         'course2' => ['nullable', 'numeric', 'exists:courses,id'],
+    //         'course3' => ['nullable', 'numeric', 'exists:courses,id'],
+    //         'course4' => ['nullable', 'numeric', 'exists:courses,id'],
+    //         'course5' => ['nullable', 'numeric', 'exists:courses,id'],
+    //         'course6' => ['nullable', 'numeric', 'exists:courses,id'],
+    //         'course7' => ['nullable', 'numeric', 'exists:courses,id'],
+    //         'course8' => ['nullable', 'numeric', 'exists:courses,id'],
+    //         'course9' => ['nullable', 'numeric', 'exists:courses,id'],
+    //         'course10' => ['nullable', 'numeric', 'exists:courses,id'],
+    //         'course11' => ['nullable', 'numeric', 'exists:courses,id'],
+    //         'course12' => ['nullable', 'numeric', 'exists:courses,id'],
+    //     ]);
+
+    //     $section = Section::create([
+    //         'name' => $request->input('name'),
+    //     ]);
+
+
+    //     // Création des associations avec les courses
+    //     $sectionCourse1 = new SectionCourse([
+    //         'section_id' => $section->id,
+    //         'course_id' => $validateData['course'],
+    //     ]);
+    //     $sectionCourse1->save();
+
+    //     if (isset($validateData['course2'])) {
+    //         $sectionCourse2 = new SectionCourse([
+    //             'section_id' => $section->id,
+    //             'course_id' => $validateData['course2'],
+    //         ]);
+    //         $sectionCourse2->save();
+    //     }
+
+    //     if (isset($validateData['course3'])) {
+    //         $sectionCourse3 = new SectionCourse([
+    //             'section_id' => $section->id,
+    //             'course_id' => $validateData['course3'],
+    //         ]);
+    //         $sectionCourse3->save();
+    //     }
+
+    //     if (isset($validateData['course4'])) {
+    //         $sectionCourse4 = new SectionCourse([
+    //             'section_id' => $section->id,
+    //             'course_id' => $validateData['course4'],
+    //         ]);
+    //         $sectionCourse4->save();
+    //     }
+
+    //     if (isset($validateData['course5'])) {
+    //         $sectionCourse5 = new SectionCourse([
+    //             'section_id' => $section->id,
+    //             'course_id' => $validateData['course5'],
+    //         ]);
+    //         $sectionCourse5->save();
+    //     }
+
+    //     if (isset($validateData['course6'])) {
+    //         $sectionCourse6 = new SectionCourse([
+    //             'section_id' => $section->id,
+    //             'course_id' => $validateData['course6'],
+    //         ]);
+    //         $sectionCourse6->save();
+    //     }
+
+    //     if (isset($validateData['course7'])) {
+    //         $sectionCourse7 = new SectionCourse([
+    //             'section_id' => $section->id,
+    //             'course_id' => $validateData['course7'],
+    //         ]);
+    //         $sectionCourse7->save();
+    //     }
+
+    //     if (isset($validateData['course8'])) {
+    //         $sectionCourse8 = new SectionCourse([
+    //             'section_id' => $section->id,
+    //             'course_id' => $validateData['course8'],
+    //         ]);
+    //         $sectionCourse8->save();
+    //     }
+
+    //     if (isset($validateData['course9'])) {
+    //         $sectionCourse9 = new SectionCourse([
+    //             'section_id' => $section->id,
+    //             'course_id' => $validateData['course9'],
+    //         ]);
+    //         $sectionCourse9->save();
+    //     }
+
+    //     if (isset($validateData['course10'])) {
+    //         $sectionCourse10 = new SectionCourse([
+    //             'section_id' => $section->id,
+    //             'course_id' => $validateData['course10'],
+    //         ]);
+    //         $sectionCourse10->save();
+    //     }
+
+    //     if (isset($validateData['course11'])) {
+    //         $sectionCourse11 = new SectionCourse([
+    //             'section_id' => $section->id,
+    //             'course_id' => $validateData['course11'],
+    //         ]);
+    //         $sectionCourse11->save();
+    //     }
+
+    //     if (isset($validateData['course12'])) {
+    //         $sectionCourse12 = new SectionCourse([
+    //             'section_id' => $section->id,
+    //             'course_id' => $validateData['course12'],
+    //         ]);
+    //         $sectionCourse12->save();
+    //     }
+
+    //     // Message flash
+    //     session()->flash('flash.banner', 'La section a été ajoutée!');
+    // }
+
     public function store(Request $request)
     {
-
-        // Validation des données de la requête
         $validateData = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'course' => ['required', 'exists:courses,id'],
-            'course2' => ['nullable', 'numeric', 'exists:courses,id'],
-            'course3' => ['nullable', 'numeric', 'exists:courses,id'],
-            'course4' => ['nullable', 'numeric', 'exists:courses,id'],
-            'course5' => ['nullable', 'numeric', 'exists:courses,id'],
-            'course6' => ['nullable', 'numeric', 'exists:courses,id'],
-            'course7' => ['nullable', 'numeric', 'exists:courses,id'],
-            'course8' => ['nullable', 'numeric', 'exists:courses,id'],
-            'course9' => ['nullable', 'numeric', 'exists:courses,id'],
-            'course10' => ['nullable', 'numeric', 'exists:courses,id'],
-            'course11' => ['nullable', 'numeric', 'exists:courses,id'],
-            'course12' => ['nullable', 'numeric', 'exists:courses,id'],
+            // Utilisez le tableau compact() pour éliminer les valeurs null de votre tableau de validation
+            ...array_map(fn ($index) => ["course$index" => ['nullable', 'numeric', 'exists:courses,id']], range(2, 12)),
         ]);
 
         $section = Section::create([
             'name' => $request->input('name'),
         ]);
 
-
-        // Création des associations avec les courses
-        $sectionCourse1 = new SectionCourse([
-            'section_id' => $section->id,
-            'course_id' => $validateData['course'],
-        ]);
-        $sectionCourse1->save();
-
-        if (isset($validateData['course2'])) {
-            $sectionCourse2 = new SectionCourse([
-                'section_id' => $section->id,
-                'course_id' => $validateData['course2'],
-            ]);
-            $sectionCourse2->save();
-        }
-
-        if (isset($validateData['course3'])) {
-            $sectionCourse3 = new SectionCourse([
-                'section_id' => $section->id,
-                'course_id' => $validateData['course3'],
-            ]);
-            $sectionCourse3->save();
-        }
-
-        if (isset($validateData['course4'])) {
-            $sectionCourse4 = new SectionCourse([
-                'section_id' => $section->id,
-                'course_id' => $validateData['course4'],
-            ]);
-            $sectionCourse4->save();
-        }
-
-        if (isset($validateData['course5'])) {
-            $sectionCourse5 = new SectionCourse([
-                'section_id' => $section->id,
-                'course_id' => $validateData['course5'],
-            ]);
-            $sectionCourse5->save();
-        }
-
-        if (isset($validateData['course6'])) {
-            $sectionCourse6 = new SectionCourse([
-                'section_id' => $section->id,
-                'course_id' => $validateData['course6'],
-            ]);
-            $sectionCourse6->save();
-        }
-
-        if (isset($validateData['course7'])) {
-            $sectionCourse7 = new SectionCourse([
-                'section_id' => $section->id,
-                'course_id' => $validateData['course7'],
-            ]);
-            $sectionCourse7->save();
-        }
-
-        if (isset($validateData['course8'])) {
-            $sectionCourse8 = new SectionCourse([
-                'section_id' => $section->id,
-                'course_id' => $validateData['course8'],
-            ]);
-            $sectionCourse8->save();
-        }
-
-        if (isset($validateData['course9'])) {
-            $sectionCourse9 = new SectionCourse([
-                'section_id' => $section->id,
-                'course_id' => $validateData['course9'],
-            ]);
-            $sectionCourse9->save();
-        }
-
-        if (isset($validateData['course10'])) {
-            $sectionCourse10 = new SectionCourse([
-                'section_id' => $section->id,
-                'course_id' => $validateData['course10'],
-            ]);
-            $sectionCourse10->save();
-        }
-
-        if (isset($validateData['course11'])) {
-            $sectionCourse11 = new SectionCourse([
-                'section_id' => $section->id,
-                'course_id' => $validateData['course11'],
-            ]);
-            $sectionCourse11->save();
-        }
-
-        if (isset($validateData['course12'])) {
-            $sectionCourse12 = new SectionCourse([
-                'section_id' => $section->id,
-                'course_id' => $validateData['course12'],
-            ]);
-            $sectionCourse12->save();
+        // Création des associations avec les cours
+        foreach (range(1, 12) as $index) {
+            if (isset($validateData["course$index"])) {
+                $sectionCourse = new SectionCourse([
+                    'section_id' => $section->id,
+                    'course_id' => $validateData["course$index"],
+                ]);
+                $sectionCourse->save();
+            }
         }
 
         // Message flash
         session()->flash('flash.banner', 'La section a été ajoutée!');
     }
+
 
 
     /**

@@ -19,6 +19,8 @@ class EvaluationFactory extends Factory
     public function definition(): array
     {
         return [
+            'name' => $this->faker->sentence(),
+
             'student_id' => Student::factory(),
             'course_id' => Course::factory(),
             'quality_of_course_material' => $this->faker->numberBetween(1, 5),
@@ -61,4 +63,3 @@ class EvaluationFactory extends Factory
         ];
     }
 }
-

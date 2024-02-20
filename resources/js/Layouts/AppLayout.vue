@@ -61,8 +61,18 @@ const logout = () => {
                                     Dashboard
                                 </NavLink>
                                 <NavLink
-                                    :href="route('Evaluation')"
-                                    :active="route().current('Evaluation')"
+                                    :href="route('formulaires.index')"
+                                    :active="
+                                        route().current('formulaires.index')
+                                    "
+                                >
+                                    Formulaires
+                                </NavLink>
+                                <NavLink
+                                    :href="route('evaluations.index')"
+                                    :active="
+                                        route().current('evaluations.index')
+                                    "
                                 >
                                     Évaluations
                                 </NavLink>
