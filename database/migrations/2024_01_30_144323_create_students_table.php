@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('surname');
             $table->string('email')->unique();
+            $table->string('unique_token')->unique(); // systéme anti doublon de formulaire
             $table->foreignId('current_team_id')->nullable();
             $table->timestamps();
         });

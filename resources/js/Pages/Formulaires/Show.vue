@@ -14,22 +14,9 @@ const props = defineProps({
     allQuestions: Array,
     allQuestions: Object,
 });
-console.log("Questions:", props.questions);
 
-// const obj1 = props.questions[1];
-// const objtest = props.questions[1].id;
-// console.log("hey");
-// console.log(obj1);
-// console.log("hooo");
-// console.log(obj1.id); // Affiche l'id de l'objet obj1
-// console.log(obj1.label); // Affiche le label de l'objet obj1
-// console.log("Owowohhh");
-// console.log(obj1["id"]); // Affiche l'id de l'objet obj1
-// console.log(obj1["label"]); // Affiche le label de l'objet obj1
-// console.log("aginnn");
-// const logQuestionLabel = (index) => {
-//     console.log(`Question ${index}`);
-// };
+const obj1 = props.questions[1];
+const objtest = props.questions[1].id;
 
 const form = useForm({
     _method: "PUT",
@@ -45,11 +32,8 @@ const form = useForm({
     })(),
 });
 
-// question1: props.formulaire.question1,
-//  question1: props.questions[0].id, // Valeur initiale pour question1
-
 const sendForm = () => {
-    form.put(route("formulaires.update", props.formulaire), {
+    form.put(route("formulaires.sendToStudents", props.formulaire), {
         preserveScroll: true,
         onSuccess: () => {
             form.reset();
@@ -101,37 +85,22 @@ const sendForm = () => {
                         />
                     </div>
 
-                    <template v-for="index in 50" :key="index">
+                    <template
+                        v-for="(question, index) in props.questions"
+                        :key="question.id"
+                    >
                         <div class="col-span-6 sm:col-span-4">
                             <InputLabel
-                                :for="`question${index}`"
-                                :value="`Question ${index}`"
+                                :for="`question${index + 1}`"
+                                :value="`Question ${index + 1}`"
                             />
-                            <select
-                                :id="`question${index}`"
-                                class="mt-1 block w-full"
-                                v-model="
-                                    form.formulaire_questions[
-                                        `question${index}`
-                                    ]
-                                "
-                            >
-                                <option value="">Select a question</option>
-                                <!-- Loop through all questions for selection -->
-                                <option
-                                    v-for="question in allQuestions"
-                                    :key="question.id"
-                                    :value="question.id"
-                                >
-                                    <!-- const AideChatGpt = props.questions[$index].id; -->
-                                    <!-- const AideChatGpt2 = props.questions[$index].label; -->
-
-                                    {{ question.id }}
-                                    {{ question.label }}
-                                </option>
-                            </select>
+                            <div class="mt-1 block w-full">
+                                <!-- Affichage du libellé de la question -->
+                                <span>{{ question.label }}</span>
+                            </div>
+                            <!-- Affichage des erreurs -->
                             <InputError
-                                :message="form.errors[`question${index}`]"
+                                :message="form.errors[`question${index + 1}`]"
                                 class="mt-2"
                             />
                         </div>
@@ -140,14 +109,14 @@ const sendForm = () => {
 
                 <template #actions>
                     <ActionMessage :on="form.recentlySuccessful" class="me-3">
-                        Sauvegardé.
+                        Envoyé.
                     </ActionMessage>
 
                     <PrimaryButton
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"
                     >
-                        Sauvegarder
+                        Envoyer
                     </PrimaryButton>
                 </template>
             </FormSection>

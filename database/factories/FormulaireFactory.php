@@ -19,7 +19,7 @@ class FormulaireFactory extends Factory
         return [
             'name' => $this->faker->word(),
             'description' => $this->faker->sentence(),
-            'question1' => $this->faker->numberBetween(1, 100),
+            'question1' => $this->faker->numberBetween(1, 10),
         ];
     }
 }

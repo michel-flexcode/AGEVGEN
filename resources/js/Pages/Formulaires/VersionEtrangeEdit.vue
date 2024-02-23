@@ -16,37 +16,32 @@ const props = defineProps({
 });
 console.log("Questions:", props.questions);
 
-// const obj1 = props.questions[1];
-// const objtest = props.questions[1].id;
-// console.log("hey");
-// console.log(obj1);
-// console.log("hooo");
-// console.log(obj1.id); // Affiche l'id de l'objet obj1
-// console.log(obj1.label); // Affiche le label de l'objet obj1
-// console.log("Owowohhh");
-// console.log(obj1["id"]); // Affiche l'id de l'objet obj1
-// console.log(obj1["label"]); // Affiche le label de l'objet obj1
-// console.log("aginnn");
-// const logQuestionLabel = (index) => {
-//     console.log(`Question ${index}`);
-// };
+const obj1 = props.questions[1];
+const objtest = props.questions[1].id;
+console.log("hey");
+console.log(obj1);
+console.log("hooo");
+console.log(obj1.id); // Affiche l'id de l'objet obj1
+console.log(obj1.label); // Affiche le label de l'objet obj1
+console.log("Owowohhh");
+console.log(obj1["id"]); // Affiche l'id de l'objet obj1
+console.log(obj1["label"]); // Affiche le label de l'objet obj1
+console.log("aginnn");
+const logQuestionLabel = (index) => {
+    console.log(`Question ${index}`);
+};
 
 const form = useForm({
     _method: "PUT",
     name: props.formulaire.name,
     description: props.formulaire.description,
-    formulaire_questions: (() => {
-        const formulaireQuestions = {};
-        const numberOfQuestions = Math.min(props.questions.length, 50); // Limite à 50 questions
-        for (let i = 0; i < numberOfQuestions; i++) {
-            formulaireQuestions[`question${i + 1}`] = props.questions[i].id;
-        }
-        return formulaireQuestions;
-    })(),
+    formulaire_questions: {
+        question1: objtest, // Valeur initiale pour question1
+        question2: "3", // Valeur initiale pour question2
+        // Ajoutez d'autres champs de la table intermédiaire ici si nécessaire
+    },
 });
-
 // question1: props.formulaire.question1,
-//  question1: props.questions[0].id, // Valeur initiale pour question1
 
 const sendForm = () => {
     form.put(route("formulaires.update", props.formulaire), {

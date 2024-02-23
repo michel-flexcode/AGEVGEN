@@ -33,6 +33,17 @@ const deleteFormulaire = () => {
     );
 };
 
+//systéme de show
+// const redirectToshow = (formulaireId) => {
+//     const routeName = "show"; // Nom de la route vers la page show.vue
+//     const routeParams = { formulaireId: formulaireId }; // Paramètres de route, formulaireId est l'ID du formulaire
+//     route(routeName, routeParams);
+// };
+
+// const redirectToshow = () => {
+//     route("show");
+// };
+
 const closeModal = () => {
     confirmingFormulaireDeletion.value = false;
 };
@@ -62,8 +73,7 @@ const closeModal = () => {
                                         route('formulaires.edit', formulaire)
                                     "
                                 >
-                                    {{ formulaire.id }}
-                                    {{ formulaire.name }}
+                                    {{ formulaire.id }} {{ formulaire.name }}
                                 </Link>
                                 <div class="space-x-4">
                                     <button
@@ -90,6 +100,22 @@ const closeModal = () => {
                                             Edit
                                         </Link>
                                     </button>
+
+                                    <!-- Tentative de création de logique analogue à show de formulaire -->
+                                    <button
+                                        class="px-4 py-2 bg-yellow-500 text-white font-semibold rounded-lg shadow-md hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-800 focus:ring-opacity-50 transition ease-in-out duration-150"
+                                    >
+                                        <Link
+                                            :href="
+                                                route(
+                                                    'formulaires.show',
+                                                    formulaire
+                                                )
+                                            "
+                                        >
+                                            Check&Envoyer
+                                        </Link>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -107,29 +133,29 @@ const closeModal = () => {
                 </div>
             </div>
         </div>
+
+        <DialogModal :show="confirmingFormulaireDeletion" @close="closeModal">
+            <template #title> Supprimer le formulaire </template>
+
+            <template #content>
+                Êtes-vous sûr de vouloir supprimer ce formulaire ? Cette action
+                est irréversible.
+            </template>
+
+            <template #footer>
+                <SecondaryButton @click="closeModal"> Annuler </SecondaryButton>
+
+                <DangerButton
+                    class="ms-3"
+                    :class="{
+                        'opacity-25': confirmingFormulaireDeletion.processing,
+                    }"
+                    :disabled="confirmingFormulaireDeletion.processing"
+                    @click="deleteFormulaire"
+                >
+                    Supprimer
+                </DangerButton>
+            </template>
+        </DialogModal>
     </AppLayout>
-
-    <DialogModal :show="confirmingFormulaireDeletion" @close="closeModal">
-        <template #title> Supprimer le formulaire </template>
-
-        <template #content>
-            Êtes-vous sûr de vouloir supprimer ce formulaire ? Cette action est
-            irréversible.
-        </template>
-
-        <template #footer>
-            <SecondaryButton @click="closeModal"> Annuler </SecondaryButton>
-
-            <DangerButton
-                class="ms-3"
-                :class="{
-                    'opacity-25': confirmingFormulaireDeletion.processing,
-                }"
-                :disabled="confirmingFormulaireDeletion.processing"
-                @click="deleteFormulaire"
-            >
-                Supprimer
-            </DangerButton>
-        </template>
-    </DialogModal>
 </template>
