@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Formulaire;
+use App\Models\FormulaireQuestion;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -22,6 +23,40 @@ class FormulaireController extends Controller
             'formulaires' => $formulaires,
         ]);
     }
+
+    // public function sendToStudents(Request $request)
+    // {
+    //     // Récupérer les données du formulaire depuis la requête
+    //     $formData = $request->all();
+
+    //     // Préparer le contenu de l'e-mail
+    //     $emailContent = "Voici les données du formulaire : \n";
+    //     foreach ($formData as $key => $value) {
+    //         $emailContent .= "$key: $value \n";
+    //     }
+
+    //     // Récupérer la liste des étudiants (par exemple depuis la base de données)
+    //     $students = User::where('role', 'student')->get();
+
+    //     // Envoyer l'e-mail à chaque étudiant
+    //     foreach ($students as $student) {
+    //         // Envoyer l'e-mail
+    //         Mail::to($student->email)->send(new FormulaireNotification($emailContent));
+    //     }
+
+    //     // Rediriger ou renvoyer une réponse appropriée
+    //     return redirect()->route('formulaires.index')->with('success', 'L\'e-mail a été envoyé à tous les étudiants avec succès.');
+    // }
+
+
+    public function show(Formulaire $formulaire)
+    {
+        // Retourner la vue avec les détails du formulaire
+        return Inertia::render('Formulaires/Show', [
+            'formulaire' => $formulaire
+        ]);
+    }
+
 
     /**
      * Affiche le formulaire pour créer un nouveau formulaire.
@@ -43,26 +78,11 @@ class FormulaireController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    // public function store(Request $request)
-    // {
-    //     dd($request);
-    //     // Validation des données du formulaire
-    //     $request->validate([
-    //         'name' => 'required|string|max:255',
-    //         'description' => 'nullable|string',
-    //     ]);
-
-    //     // Création du formulaire
-    //     Formulaire::create($request->all());
-
-    //     // Redirection avec un message de succès
-    //     return redirect()->route('formulaires.index')
-    //         ->with('success', 'Formulaire créé avec succès.');
-    // }
 
     public function store(Request $request)
     {
-        $this->validate($request, [
+        // dd($request);
+        $validatedData = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:255'],
             'question1' => [
@@ -118,113 +138,59 @@ class FormulaireController extends Controller
             'question49' => ['nullable', 'numeric', 'exists:questions,id'],
             'question50' => ['nullable', 'numeric', 'exists:questions,id'],
         ]);
-        // dd($request);
-        Formulaire::create([
-            'name' => $request->input('name'),
-            'description' => $request->input('description'), 'question1' => $request->input('question1'),
-            'question2' => $request->input('question2'),
-            'question3' => $request->input('question3'),
-            'question4' => $request->input('question4'),
-            'question5' => $request->input('question5'),
-            'question6' => $request->input('question6'),
-            'question7' => $request->input('question7'),
-            'question8' => $request->input('question8'),
-            'question9' => $request->input('question9'),
-            'question10' => $request->input('question10'),
-            'question11' => $request->input('question11'),
-            'question12' => $request->input('question12'),
-            'question13' => $request->input('question13'),
-            'question14' => $request->input('question14'),
-            'question15' => $request->input('question15'),
-            'question16' => $request->input('question16'),
-            'question17' => $request->input('question17'),
-            'question18' => $request->input('question18'),
-            'question19' => $request->input('question19'),
-            'question20' => $request->input('question20'),
-            'question21' => $request->input('question21'),
-            'question22' => $request->input('question22'),
-            'question23' => $request->input('question23'),
-            'question24' => $request->input('question24'),
-            'question25' => $request->input('question25'),
-            'question26' => $request->input('question26'),
-            'question27' => $request->input('question27'),
-            'question28' => $request->input('question28'),
-            'question29' => $request->input('question29'),
-            'question30' => $request->input('question30'),
-            'question31' => $request->input('question31'),
-            'question32' => $request->input('question32'),
-            'question33' => $request->input('question33'),
-            'question34' => $request->input('question34'),
-            'question35' => $request->input('question35'),
-            'question36' => $request->input('question36'),
-            'question37' => $request->input('question37'),
-            'question38' => $request->input('question38'),
-            'question39' => $request->input('question39'),
-            'question40' => $request->input('question40'),
-            'question41' => $request->input('question41'),
-            'question42' => $request->input('question42'),
-            'question43' => $request->input('question43'),
-            'question44' => $request->input('question44'),
-            'question45' => $request->input('question45'),
-            'question46' => $request->input('question46'),
-            'question47' => $request->input('question47'),
-            'question48' => $request->input('question48'),
-            'question49' => $request->input('question49'),
-            'question50' => $request->input('question50'),
+
+        // Créer le formulaire
+        $formulaire = Formulaire::create([
+            'name' => $validatedData['name'],
+            'description' => $validatedData['description'],
         ]);
 
-        session()->flash('flash.banner', 'Un formulaire a été ajouté!');
+        // Initialiser un tableau pour stocker les données à insérer
+        $formulaireQuestions = [];
+
+        // Boucle sur chaque question
+        for ($i = 1; $i <= 50; $i++) {
+            // Vérifier si la question existe dans les données validées
+            if (isset($validatedData["question$i"])) {
+                // Ajouter la question au tableau des données à insérer
+                $formulaireQuestions[] = [
+                    'formulaire_id' => $formulaire->id,
+                    'question_id' => $validatedData["question$i"],
+                ];
+            }
+        }
+
+        // Insérer toutes les questions à la fin
+        FormulaireQuestion::insert($formulaireQuestions);
+
+        // Rediriger avec un message flash
+        return redirect()->route('formulaires.index')
+            ->with('success', 'Formulaire créé avec succès.');
     }
 
-    // public function store(Request $request)
-    // {
-    //     $validateData = $request->validate([
-    //         'name' => ['required', 'string', 'max:255'],
-    //         'question' => ['required', 'exists:questions,id'],
-    //         // Utilisez le tableau compact() pour éliminer les valeurs null de votre tableau de validation
-    //         ...array_map(fn ($index) => ["question$index" => ['nullable', 'numeric', 'exists:questions,id']], range(2, 12)),
-    //     ]);
-
-    //     $section = Section::create([
-    //         'name' => $request->input('name'),
-    //     ]);
-
-    //     // Création des associations avec les cours
-    //     foreach (range(1, 502) as $index) {
-    //         if (isset($validateData["question$index"])) {
-    //             $sectionQuestion = new SectionQuestion([
-    //                 'section_id' => $section->id,
-    //                 'question_id' => $validateData["question$index"],
-    //             ]);
-    //             $sectionQuestion->save();
-    //         }
-    //     }
-
-    //     // Message flash
-    //     session()->flash('flash.banner', 'La section a été ajoutée!');
-    // }
-
-    // Ajoutez les autres méthodes du contrôleur ici, comme show(), edit(), update(), etc.
     public function edit(Formulaire $formulaire)
     {
-        //Association de l'id stocké chez formulaires avec l'id des questions
-        $questions = Question::whereIn('id', [
-            $formulaire->question1,
-            $formulaire->question2,
-            $formulaire->question3,
-            $formulaire->question4,
-            $formulaire->question5,
-            $formulaire->question6,
-            $formulaire->question7,
-            $formulaire->question8,
-            $formulaire->question9,
-            $formulaire->question10,
-            $formulaire->question11,
-            $formulaire->question12,
-        ])->pluck('label', 'id')->toArray();
+        // Récupérer l'ID du formulaire
+        $formulaireNum = $formulaire->id;
 
+        // Tableau pour stocker les IDs des questions liées au formulaire
+        $stockArr = array();
+
+        // Récupérer toutes les questions liées au formulaire
+        $formulaireQuestions = FormulaireQuestion::where('formulaire_id', $formulaireNum)->get();
+
+        // Parcourir les questions et stocker leurs IDs dans $stockArr
+        foreach ($formulaireQuestions as $question) {
+            $stockArr[] = $question->question_id;
+        }
+
+        // Récupérer les questions correspondant aux IDs stockés dans $stockArr
+        $questions = Question::whereIn('id', $stockArr)->get();
+        //dd($questions);
+        // Récupérer toutes les questions
         $allQuestions = Question::all();
 
+        // Rendre la vue avec les données nécessaires
         return Inertia::render('Formulaires/Edit', [
             'formulaire' => $formulaire,
             'questions' => $questions,
@@ -234,130 +200,74 @@ class FormulaireController extends Controller
 
     public function update(Request $request, Formulaire $formulaire)
     {
-        // dd($request);
+        // Valider les champs communs
         $this->validate($request, [
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:255'],
-            // Ajouter ici les règles de validation pour les cours multiples
-            'question1' => ['nullable', 'integer'],
-            'question2' => ['nullable', 'integer'],
-            'question3' => ['nullable', 'integer'],
-            'question4' => ['nullable', 'integer'],
-            'question5' => ['nullable', 'integer'],
-            'question6' => ['nullable', 'integer'],
-            'question7' => ['nullable', 'integer'],
-            'question8' => ['nullable', 'integer'],
-            'question9' => ['nullable', 'integer'],
-            'question10' => ['nullable', 'integer'],
-            'question11' => ['nullable', 'integer'],
-            'question12' => ['nullable', 'integer'],
-            'question13' => ['nullable', 'integer'],
-            'question14' => ['nullable', 'integer'],
-            'question15' => ['nullable', 'integer'],
-            'question16' => ['nullable', 'integer'],
-            'question17' => ['nullable', 'integer'],
-            'question18' => ['nullable', 'integer'],
-            'question19' => ['nullable', 'integer'],
-            'question20' => ['nullable', 'integer'],
-            'question21' => ['nullable', 'integer'],
-            'question22' => ['nullable', 'integer'],
-            'question23' => ['nullable', 'integer'],
-            'question24' => ['nullable', 'integer'],
-            'question25' => ['nullable', 'integer'],
-            'question26' => ['nullable', 'integer'],
-            'question27' => ['nullable', 'integer'],
-            'question28' => ['nullable', 'integer'],
-            'question29' => ['nullable', 'integer'],
-            'question30' => ['nullable', 'integer'],
-            'question31' => ['nullable', 'integer'],
-            'question32' => ['nullable', 'integer'],
-            'question33' => ['nullable', 'integer'],
-            'question34' => ['nullable', 'integer'],
-            'question35' => ['nullable', 'integer'],
-            'question36' => ['nullable', 'integer'],
-            'question37' => ['nullable', 'integer'],
-            'question38' => ['nullable', 'integer'],
-            'question39' => ['nullable', 'integer'],
-            'question40' => ['nullable', 'integer'],
-            'question41' => ['nullable', 'integer'],
-            'question42' => ['nullable', 'integer'],
-            'question43' => ['nullable', 'integer'],
-            'question44' => ['nullable', 'integer'],
-            'question45' => ['nullable', 'integer'],
-            'question46' => ['nullable', 'integer'],
-            'question47' => ['nullable', 'integer'],
-            'question48' => ['nullable', 'integer'],
-            'question49' => ['nullable', 'integer'],
-            'question50' => ['nullable', 'integer'],
-
         ]);
 
-        // Mettre à jour les informations de l'enseignant
-        $formulaire->update([
-            'name' => $request->input('name'),
-            'description' => $request->input('description'),
-            // Mettre à jour les cours multiples
-            'question1' => $request->input('question1'),
-            'question2' => $request->input('question2'),
-            'question3' => $request->input('question3'),
-            'question4' => $request->input('question4'),
-            'question5' => $request->input('question5'),
-            'question6' => $request->input('question6'),
-            'question7' => $request->input('question7'),
-            'question8' => $request->input('question8'),
-            'question9' => $request->input('question9'),
-            'question10' => $request->input('question10'),
-            'question11' => $request->input('question11'),
-            'question12' => $request->input('question12'),
-            'question13' => $request->input('question13'),
-            'question14' => $request->input('question14'),
-            'question15' => $request->input('question15'),
-            'question16' => $request->input('question16'),
-            'question17' => $request->input('question17'),
-            'question18' => $request->input('question18'),
-            'question19' => $request->input('question19'),
-            'question20' => $request->input('question20'),
-            'question21' => $request->input('question21'),
-            'question22' => $request->input('question22'),
-            'question23' => $request->input('question23'),
-            'question24' => $request->input('question24'),
-            'question25' => $request->input('question25'),
-            'question26' => $request->input('question26'),
-            'question27' => $request->input('question27'),
-            'question28' => $request->input('question28'),
-            'question29' => $request->input('question29'),
-            'question30' => $request->input('question30'),
-            'question31' => $request->input('question31'),
-            'question32' => $request->input('question32'),
-            'question33' => $request->input('question33'),
-            'question34' => $request->input('question34'),
-            'question35' => $request->input('question35'),
-            'question36' => $request->input('question36'),
-            'question37' => $request->input('question37'),
-            'question38' => $request->input('question38'),
-            'question39' => $request->input('question39'),
-            'question40' => $request->input('question40'),
-            'question41' => $request->input('question41'),
-            'question42' => $request->input('question42'),
-            'question43' => $request->input('question43'),
-            'question44' => $request->input('question44'),
-            'question45' => $request->input('question45'),
-            'question46' => $request->input('question46'),
-            'question47' => $request->input('question47'),
-            'question48' => $request->input('question48'),
-            'question49' => $request->input('question49'),
-            'question50' => $request->input('question50'),
-        ]);
+        // Valider les questions
+        $this->validateQuestions($request);
 
-        session()->flash('flash.banner', 'Le formulaire a été modifié!');
+        // Mettre à jour le formulaire
+        $formulaire->update($request->only('name', 'description'));
 
-        return redirect()->route('formulaires.index');
+        // Mettre à jour les relations dans la table intermédiaire
+        $this->updateFormulaireQuestions($request, $formulaire);
+
+        return redirect()->route('formulaires.index')->with('success', 'Formulaire mis à jour avec succès.');
+    }
+
+    protected function validateQuestions(Request $request)
+    {
+        $questions = collect($request->get('formulaire_questions', []));
+
+        // Valider chaque question
+        $questions->each(function ($questionId, $questionNumber) use ($request) {
+            $this->validate($request, [
+                "formulaire_questions.{$questionNumber}" => ['nullable', 'integer'],
+            ]);
+        });
+    }
+
+    // protected function updateFormulaireQuestions(Request $request, Formulaire $formulaire)
+    // {
+    //     // Récupérer les questions envoyées dans la requête
+    //     $questions = collect($request->get('formulaire_questions', []));
+
+    //     // Mettre à jour les relations dans la table intermédiaire
+    //     $questions->each(function ($questionId, $questionNumber) use ($formulaire) {
+    //         // Si la question a une valeur (non null), associez-la au formulaire
+    //         if (!is_null($questionId)) {
+    //             FormulaireQuestion::updateOrCreate([
+    //                 'formulaire_id' => $formulaire->id,
+    //                 'question_id' => $questionId,
+    //             ]);
+    //         }
+    //     });
+    // }
+
+    protected function updateFormulaireQuestions(Request $request, Formulaire $formulaire)
+    {
+        // Récupérer les questions envoyées dans la requête
+        $questions = collect($request->get('formulaire_questions', []));
+
+        // Supprimer les entrées existantes pour ce formulaire
+        $formulaire->questions()->detach();
+
+        // Mettre à jour les relations dans la table intermédiaire
+        $questions->each(function ($questionId, $questionNumber) use ($formulaire) {
+            // Si la question a une valeur (non null), associez-la au formulaire
+            if (!is_null($questionId)) {
+                $formulaire->questions()->attach($questionId);
+            }
+        });
     }
 
     public function destroy(Formulaire $formulaire)
     {
         $formulaire->delete();
-        session()->flash('flash.banner', 'La evaluation a été détruite!');
+        session()->flash('flash.banner', 'Le formulaire a été détruit!');
 
         return redirect()->route('formulaires.index');
     }

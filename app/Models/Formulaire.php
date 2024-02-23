@@ -64,13 +64,30 @@ class Formulaire extends Model
         'question50',
     ];
 
-    public function questions()
-    {
-        return $this->belongsToMany(Question::class, 'formulaire_questions');
-    }
+    // public function questions()
+    // {
+    //     return $this->belongsToMany(Question::class, 'formulaire_questions');
+    // }
+
+
+    // public function questions()
+    // {
+    //     return $this->hasMany(Question::class);
+    // }
+
 
     // public function reponses()
     // {
     //     return $this->hasMany(Reponse::class);
     // }
+
+    // public function questions()
+    // {
+    //     return $this->belongsToMany(Question::class);
+    // }
+
+    public function questions()
+    {
+        return $this->belongsToMany(Question::class, 'formulaire_questions');
+    }
 }

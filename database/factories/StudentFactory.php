@@ -21,6 +21,7 @@ class StudentFactory extends Factory
             'name' => $this->faker->name(),
             'surname' => $this->faker->word(),
             'email' => $this->faker->unique()->safeEmail(),
+            'unique_token' => $this->faker->unique()->uuid(),
         ];
     }
 }

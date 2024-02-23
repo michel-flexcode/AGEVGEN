@@ -14,8 +14,18 @@ class Question extends Model
         'type',
     ];
 
+    // public function formulaires()
+    // {
+    //     return $this->belongsToMany(Formulaire::class, 'formulaire_questions');
+    // }
+
+    // public function formulaires()
+    // {
+    //     return $this->belongsToMany(Formulaire::class);
+    // }
+
     public function formulaires()
     {
-        return $this->belongsToMany(Formulaire::class, 'formulaire_questions');
+        return $this->belongsToMany(Formulaire::class, 'formulaire_question');
     }
 }

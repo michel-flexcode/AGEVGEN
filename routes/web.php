@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\SectionController;
@@ -22,8 +23,7 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
-//ccccccp
-//cc c'est kat
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -47,13 +47,19 @@ Route::middleware([
         return Inertia::render('Evaluation');
     })->name('Evaluation');
 
+
     Route::resource('/questions', QuestionController::class);
     Route::resource('/teachers', TeacherController::class);
     Route::resource('/students', StudentController::class);
     Route::resource('/courses', CourseController::class);
     Route::resource('/sections', SectionController::class);
     Route::resource('/evaluations', EvaluationController::class);
+    //Route::get('/formulaires/{formulaireId}', [AnswerController::class, 'index']);
     Route::resource('/formulaires', FormulaireController::class);
+    Route::resource('/answers', AnswerController::class);
+    // Route::get('/formulaires/{formulaire}/show', [FormulaireController::class, 'show'])->name('formulaires.show');
+    Route::get('/formulaires/{formulaire}', [FormulaireController::class, 'show'])->name('formulaires.show');
+
 
     Route::get('questions/delete/{question}', [QuestionController::class, 'deletetest']);
 });
