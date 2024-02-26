@@ -7,6 +7,8 @@ use App\Models\FormulaireQuestion;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\FormulaireSoumis;
 
 class FormulaireController extends Controller
 {
@@ -24,39 +26,89 @@ class FormulaireController extends Controller
         ]);
     }
 
-    // public function sendToStudents(Request $request)
-    // {
-    //     // Récupérer les données du formulaire depuis la requête
-    //     $formData = $request->all();
+    //     // Sélectionnez les formulaires où la valeur de la colonne 'id' correspond à $selectionneurTESTPLUSUN
+    //     $formulaire = Formulaire::where('id', $selectionneur)->get();
 
-    //     // Préparer le contenu de l'e-mail
-    //     $emailContent = "Voici les données du formulaire : \n";
-    //     foreach ($formData as $key => $value) {
-    //         $emailContent .= "$key: $value \n";
-    //     }
+    //     // dd($formulaire);
 
-    //     // Récupérer la liste des étudiants (par exemple depuis la base de données)
-    //     $students = User::where('role', 'student')->get();
+    //     //Travailler sur ID pour remplacer Formulaires/Show par Formulaires/id_de_la_requête
+    public function send(Request $request)
+    {
+        // dd($request);
+        // try {
+        Mail::to(['mrmichelcecere@gmail.com'])->send(new FormulaireSoumis($request->all()));
 
-    //     // Envoyer l'e-mail à chaque étudiant
-    //     foreach ($students as $student) {
-    //         // Envoyer l'e-mail
-    //         Mail::to($student->email)->send(new FormulaireNotification($emailContent));
-    //     }
+        // Si le mail est envoyé avec succès, renvoie une réponse Inertia avec le message de succès
+        return Inertia::render('Formulaires/Index')->with('success', 'Formulaire envoyé avec succès');
+        // } catch (\Exception $e) {
+        //     // En cas d'erreur, renvoie une réponse Inertia avec le message d'erreur
+        //     $errorMessage = 'Erreur lors de l\'envoi du formulaire : ' . $e->getMessage();
+        //     return Inertia::render('Dashboard')->with('error', $errorMessage);
+        // }
+    }
 
-    //     // Rediriger ou renvoyer une réponse appropriée
-    //     return redirect()->route('formulaires.index')->with('success', 'L\'e-mail a été envoyé à tous les étudiants avec succès.');
-    // }
+    public function mail()
+    {
+        try {
+            // Construire l'objet du mail avec les données nécessaires
+            $formData = [
+                // Ajoutez ici les données spécifiques que vous souhaitez inclure dans le mail
+            ];
+
+            // Envoyer l'e-mail à mrmichelcecere@gmail.com
+            Mail::to('mrmichelcecere@gmail.com')->send(new FormulaireSoumis($formData));
+
+            // Si le mail est envoyé avec succès, vous pouvez renvoyer une réponse appropriée
+            return response()->json(['message' => 'Mail envoyé avec succès'], 200);
+        } catch (\Exception $e) {
+            // En cas d'erreur lors de l'envoi du mail, vous pouvez renvoyer un message d'erreur
+            return response()->json(['error' => 'Erreur lors de l\'envoi du mail : ' . $e->getMessage()], 500);
+        }
+    }
+
+
 
 
     public function show(Formulaire $formulaire)
     {
-        // Retourner la vue avec les détails du formulaire
+        // Récupérer les questions associées à ce formulaire spécifique
+        $questions = $formulaire->questions;
+
+        // Retourner la vue avec les détails du formulaire et les questions associées
         return Inertia::render('Formulaires/Show', [
-            'formulaire' => $formulaire
+            'formulaire' => $formulaire,
+            'questions' => $questions,
+            // 'sendFormToStudents' => fn () => ['message' => 'coucou'],
         ]);
     }
 
+
+
+    public function sendFormToStudents(Request $request)
+    {
+        echo 'SENDFORM';
+        //dd($request);
+        // Récupérer les données du formulaire depuis la requête
+        // $formData = $request->all();
+
+        // // Préparer le contenu de l'e-mail
+        // $emailContent = "Voici les données du formulaire : \n";
+        // foreach ($formData as $key => $value) {
+        //     $emailContent .= "$key: $value \n";
+        // }
+
+        // // Récupérer la liste des étudiants (par exemple depuis la base de données)
+        // $students = User::where('role', 'student')->get();
+
+        // // Envoyer l'e-mail à chaque étudiant
+        // foreach ($students as $student) {
+        //     // Envoyer l'e-mail
+        //     Mail::to($student->email)->send(new FormulaireNotification($emailContent));
+        // }
+
+        // Rediriger ou renvoyer une réponse appropriée
+        return redirect()->route('formulaires.index')->with('success', 'L\'e-mail a été envoyé à tous les étudiants avec succès.');
+    }
 
     /**
      * Affiche le formulaire pour créer un nouveau formulaire.
@@ -197,6 +249,8 @@ class FormulaireController extends Controller
             'allQuestions' => $allQuestions,
         ]);
     }
+
+
 
     public function update(Request $request, Formulaire $formulaire)
     {
