@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AnswerController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\SectionController;
@@ -55,11 +56,34 @@ Route::middleware([
     Route::resource('/sections', SectionController::class);
     Route::resource('/evaluations', EvaluationController::class);
     //Route::get('/formulaires/{formulaireId}', [AnswerController::class, 'index']);
-    Route::resource('/formulaires', FormulaireController::class);
     Route::resource('/answers', AnswerController::class);
     // Route::get('/formulaires/{formulaire}/show', [FormulaireController::class, 'show'])->name('formulaires.show');
-    Route::get('/formulaires/{formulaire}', [FormulaireController::class, 'show'])->name('formulaires.show');
+    // Route::get('/formulaires/{formulaire}', [FormulaireController::class, 'show'])->name('formulaires.show');
+    // Route::post('/formulaires/sendToStudents', [FormulaireController::class, 'sendToStudents'])->name('formulaires.sendToStudents');
+    // Route::post('/formulaires/sendToStudents', [FormulaireController::class, 'sendToStudents']);
+    // Route::get('/formulaires/{formulaire}', [FormulaireController::class, 'show'])->name('formulaires.show');
+    // Route::post('/formulaires/show', [FormulaireController::class, 'send'])->name('formulaires.send');
+    Route::post('/formulaires/send', [FormulaireController::class, 'send'])->name('formulaires.send');
+    Route::resource('/formulaires', FormulaireController::class);
+    // Route::post('/formulaires', [FormulaireController::class, 'send']);
+    Route::get('/formulaires/mail', [FormulaireController::class, 'mail'])->name('formulaires.mail');
 
+    //https://laravel.sillo.org/cours-laravel-10-les-bases-envoyer-un-email/ tutoriel
+    Route::get('contact', [ContactController::class, 'create']);
+    Route::post('contact', [ContactController::class, 'store']);
+
+    Route::get('/test-contact', function () {
+        return new App\Mail\Contact([
+            'nom' => 'Durand',
+            'email' => 'durand@chezlui.com',
+            'message' => 'Je voulais vous dire que votre site est magnifique !'
+        ]);
+    });
+
+    // Route::post('/envoyer-formulaire', [FormulaireController::class, 'envoyerFormulaire']);
+
+    // [21:34] Thibault Six
+    Route::get('/form/mail', [FormulaireController::class, 'mail'])->name('form.mail');
 
     Route::get('questions/delete/{question}', [QuestionController::class, 'deletetest']);
 });

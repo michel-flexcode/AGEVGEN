@@ -15,8 +15,7 @@ const props = defineProps({
 });
 
 const form = useForm({
-    _method: "POST",
-    id: props.formulaire.id,
+    _method: "PUT",
     name: props.formulaire.name,
     description: props.formulaire.description,
     formulaire_questions: (() => {
@@ -29,13 +28,18 @@ const form = useForm({
     })(),
 });
 
-const sendForm = () => {
-    form.post(route("formulaires.send"), {
-        preserveScroll: true,
-        onSuccess: () => {
-            form.reset();
-        },
-    });
+const sendForm = async () => {
+    try {
+        const response = await axios.post(
+            "/envoyer-formulaire", // Utilisez l'URL de votre route Laravel ici
+            form.data()
+        );
+        // Gérer la réponse si nécessaire
+        console.log(response.data);
+    } catch (error) {
+        // Gérer les erreurs d'envoi
+        console.error(error);
+    }
 };
 </script>
 

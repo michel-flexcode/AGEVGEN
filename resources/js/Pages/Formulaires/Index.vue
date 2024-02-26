@@ -43,6 +43,9 @@ const deleteFormulaire = () => {
 // const redirectToshow = () => {
 //     route("show");
 // };
+const redirectToShow = () => {
+    route("formulaires.show", { formulaire: props.formulaire });
+};
 
 const closeModal = () => {
     confirmingFormulaireDeletion.value = false;
