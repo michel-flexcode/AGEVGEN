@@ -8,26 +8,37 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Mail\Mailables\Address;
 
-class Contact extends Mailable
+class FormulaireSoumis extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Elements de contact
-     * @var array
-     */
-    public $contact;
-
+    public $formData;
     /**
      * Create a new message instance.
-     *
-     * @return void
      */
-    public function __construct(array $contact)
+    public function __construct($formData)
     {
-        $this->contact = $contact;
+        // dd($formData);
+        $this->formData = $formData;
+    }
+
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+    // public function build()
+    // {
+    //     return $this->subject('Formulaire Soumis')
+    //         // ->view('emails.formulaire-soumis');
+    //         ->view('emails.contact');
+    // }
+    public function build()
+    {
+        return $this->subject('Nouveau formulaire soumis')
+            ->view('emails.formulaire-soumis')
+            ->with(['formData' => $this->formData]);
     }
 
     /**
@@ -36,7 +47,8 @@ class Contact extends Mailable
     // public function envelope(): Envelope
     // {
     //     return new Envelope(
-    //         from: new Address('admin@contact.com', 'John Lennon'),
+    //         // from: new Address('mrmichelcecere@gmail.com', 'John Lennon'),
+    //         from: 'mrmichelcecere@gmail.com',
     //         subject: 'Contact',
     //     );
     // }
