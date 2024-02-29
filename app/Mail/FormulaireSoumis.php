@@ -21,6 +21,8 @@ class FormulaireSoumis extends Mailable
     {
         // dd($formData);
         $this->formData = $formData;
+
+        // dd($formData);
     }
 
     /**
@@ -28,12 +30,6 @@ class FormulaireSoumis extends Mailable
      *
      * @return $this
      */
-    // public function build()
-    // {
-    //     return $this->subject('Formulaire Soumis')
-    //         // ->view('emails.formulaire-soumis');
-    //         ->view('emails.contact');
-    // }
     public function build()
     {
         return $this->subject('Nouveau formulaire soumis')
@@ -44,11 +40,12 @@ class FormulaireSoumis extends Mailable
     /**
      * Get the message envelope.
      */
+
     // public function envelope(): Envelope
     // {
     //     return new Envelope(
-    //         // from: new Address('mrmichelcecere@gmail.com', 'John Lennon'),
-    //         from: 'mrmichelcecere@gmail.com',
+    //         // from: new Address('machin@gmail.com', 'John Lennon'),
+    //         from: 'machin@gmail.com',
     //         subject: 'Contact',
     //     );
     // }

@@ -4,11 +4,11 @@ import Welcome from "@/Components/Welcome.vue";
 </script>
 
 <template>
-    <!-- <div> -->
-    <!-- <h2>{{ formulaire.name }}</h2>
-        <p>{{ formulaire.description }}</p> -->
+    <div>
+        <h2>{{ formulaire.name }}</h2>
+        <p>{{ formulaire.description }}</p>
 
-    <!-- <form @submit.prevent="submitForm">
+        <form @submit.prevent="submitForm">
             <div v-for="(question, index) in questions" :key="question.id">
                 <label :for="'question-' + index">{{ question.label }}</label>
                 <input
@@ -20,6 +20,5 @@ import Welcome from "@/Components/Welcome.vue";
 
             <button type="submit">Submit</button>
         </form>
-    </div> -->
-    <h1>heyho</h1>
+    </div>
 </template>

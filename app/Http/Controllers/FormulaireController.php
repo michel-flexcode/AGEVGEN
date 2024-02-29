@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\FormulaireSoumis;
+use App\Models\Student;
+use Illuminate\Support\Str;
 
 class FormulaireController extends Controller
 {
@@ -19,33 +21,163 @@ class FormulaireController extends Controller
      */
     public function index(Request $request)
     {
+
         $formulaires = Formulaire::orderBy('name', 'ASC')->paginate(8);
-        // dd($teachers);
+        // dd($formulaires);
         return Inertia::render('Formulaires/Index', [
             'formulaires' => $formulaires,
         ]);
     }
 
-    //     // Sélectionnez les formulaires où la valeur de la colonne 'id' correspond à $selectionneurTESTPLUSUN
-    //     $formulaire = Formulaire::where('id', $selectionneur)->get();
+    public function edit(Formulaire $formulaire)
+    {
+        // dd($formulaire);
+        // Récupérer l'ID du formulaire
+        $formulaireNum = $formulaire->id;
 
-    //     // dd($formulaire);
+        // Tableau pour stocker les IDs des questions liées au formulaire
+        $stockArr = array();
 
-    //     //Travailler sur ID pour remplacer Formulaires/Show par Formulaires/id_de_la_requête
+        // Récupérer toutes les questions liées au formulaire
+        $formulaireQuestions = FormulaireQuestion::where('formulaire_id', $formulaireNum)->get();
+
+        // Parcourir les questions et stocker leurs IDs dans $stockArr
+        foreach ($formulaireQuestions as $question) {
+            $stockArr[] = $question->question_id;
+        }
+
+        // Récupérer les questions correspondant aux IDs stockés dans $stockArr
+        $questions = Question::whereIn('id', $stockArr)->get();
+        //dd($questions);
+        // Récupérer toutes les questions
+        $allQuestions = Question::all();
+
+        // Rendre la vue avec les données nécessaires
+        return Inertia::render('Formulaires/Edit', [
+            'formulaire' => $formulaire,
+            'questions' => $questions,
+            'allQuestions' => $allQuestions,
+        ]);
+    }
+
+
+    // public function send(Request $request)
+    // {
+    //     // dd($request);
+    //     $formulaireNum = $request->input('id');
+
+    //     // $allStudents = Student::all();
+    //     $allStudents = Student::take(2)->get();
+    //     $allEmailStudents = $allStudents->pluck('email')->toArray();
+    //     // dd($allEmailStudents); // Vérifie si tu obtiens toutes les adresses e-mails
+
+    //     Mail::to($allEmailStudents)->send(new FormulaireSoumis($request->all()));
+
+    //     return Inertia::render('Dashboard');
+    // }
+
+    // public function send(Request $request)
+    // {
+    //     // Récupère l'ID du formulaire
+    //     $formulaireNum = $request->input('id');
+
+    //     // Récupère les étudiants (dans cet exemple, on prend seulement les deux premiers)
+    //     // $allStudents = Student::all()
+    //     $allStudents = Student::take(2)->get();
+    //     // $dd($allStudents);
+    //     $allEmailStudents = $allStudents->pluck('email');
+
+    //     // Parcours chaque étudiant
+    //     foreach ($allEmailStudents as $emailStudent) {
+    //         // Génère un token unique pour cet étudiant
+    //         $token = Str::random(32); // Utilise la classe Str de Laravel pour générer un token aléatoire
+
+    //         // Stocke ce token dans la base de données pour cet étudiant
+    //         $emailStudent->update(['token' => $token]);
+
+    //         // Construit l'URL avec le token unique
+    //         $url = route('answer', ['token' => $token]);
+
+    //         // Envoie un e-mail à cet étudiant avec le lien vers le formulaire
+    //         Mail::to($emailStudent->email)->send(new FormulaireSoumis($url));
+    //     }
+
+    //     // Une fois que tous les e-mails ont été envoyés, tu peux rediriger l'utilisateur
+    //     return Inertia::render('Dashboard');
+    // }
+
     public function send(Request $request)
     {
-        // dd($request);
-        // try {
-        Mail::to(['mrmichelcecere@gmail.com'])->send(new FormulaireSoumis($request->all()));
+        // Récupère l'ID du formulaire
+        $formulaireNum = $request->input('id');
 
-        // Si le mail est envoyé avec succès, renvoie une réponse Inertia avec le message de succès
-        return Inertia::render('Formulaires/Index')->with('success', 'Formulaire envoyé avec succès');
-        // } catch (\Exception $e) {
-        //     // En cas d'erreur, renvoie une réponse Inertia avec le message d'erreur
-        //     $errorMessage = 'Erreur lors de l\'envoi du formulaire : ' . $e->getMessage();
-        //     return Inertia::render('Dashboard')->with('error', $errorMessage);
+        // Récupère les adresses e-mail des étudiants (dans cet exemple, on prend seulement les deux premiers)
+        // $allStudents = Student::all();
+        $allStudents = Student::take(2)->get();
+        $allEmailStudents = $allStudents->pluck('email');
+
+        // Parcours chaque adresse e-mail
+        // foreach ($allEmailStudents as $email) {
+        //     // Construit l'URL vers le formulaire pour cet étudiant
+        //     // $url = route('formulaires.show', ['id' => $formulaireNum]); // Assurez-vous d'ajuster le nom de la route si nécessaire
+
+        //     // Envoie un e-mail à cette adresse e-mail avec le lien vers le formulaire
+        //     Mail::to($email)->send(new FormulaireSoumis($request->all()));
         // }
+
+        foreach ($allEmailStudents as $email) {
+            // Générer l'URL vers la page answers/index
+            $url = route('answers.index');
+            // dd($url);
+            // Envoie un e-mail à cette adresse e-mail avec le lien vers le formulaire
+            // Vous pouvez inclure le lien dans le corps de l'e-mail
+            Mail::to($email)->send(new FormulaireSoumis($url));
+        }
+
+        // Une fois que tous les e-mails ont été envoyés, tu peux rediriger l'utilisateur
+        return Inertia::render('Dashboard');
     }
+
+    // } catch (\Exception $e) {
+    //     // En cas d'erreur, renvoie une réponse Inertia avec le message d'erreur
+    //     $errorMessage = 'Erreur lors de l\'envoi du formulaire : ' . $e->getMessage();
+    //     return Inertia::render('Dashboard')->with('error', $errorMessage);
+    // }
+    // $formulaires = Formulaire::orderBy('name', 'ASC')->paginate(8);
+    // $questions = $formulaire->questions;
+    // return Inertia::render('Formulaires/Index', [
+    //     'formulaire' => $formulaire,
+    //     'questions' => $questions,
+    //     // 'sendFormToStudents' => fn () => ['message' => 'coucou'],
+    // ]);
+    //        Mail::to(['mrmichelcecere@gmail.com'])->send(new FormulaireSoumis($request->all()));
+
+
+    // Il faut séléctionner tout les $student mail
+    // Il faut faire un lien avec selectionneurID vers answers.
+    // Il faut que ce soit un lien vers un answers généré avec token
+
+    // // dd($selectionneur);
+    // $formulaire = Formulaire::where('id', $selectionneurID)->get();
+
+    // // dd($formulaire);
+
+    // // Tableau pour stocker les IDs des questions liées au formulaire
+    // $stockArr = array();
+
+    // // Récupérer toutes les questions liées au formulaire
+    // $formulaireQuestions = FormulaireQuestion::where('formulaire_id', $selectionneurID)->get();
+
+    // // dd($formulaireQuestions);
+
+    // // Parcourir les questions et stocker leurs IDs dans $stockArr
+    // foreach ($formulaireQuestions as $question) {
+    //     $stockArr[] = $question->question_id;
+    // }
+
+    // dd($formulaireQuestions);
+
+
 
     public function mail()
     {
@@ -220,35 +352,7 @@ class FormulaireController extends Controller
             ->with('success', 'Formulaire créé avec succès.');
     }
 
-    public function edit(Formulaire $formulaire)
-    {
-        // Récupérer l'ID du formulaire
-        $formulaireNum = $formulaire->id;
 
-        // Tableau pour stocker les IDs des questions liées au formulaire
-        $stockArr = array();
-
-        // Récupérer toutes les questions liées au formulaire
-        $formulaireQuestions = FormulaireQuestion::where('formulaire_id', $formulaireNum)->get();
-
-        // Parcourir les questions et stocker leurs IDs dans $stockArr
-        foreach ($formulaireQuestions as $question) {
-            $stockArr[] = $question->question_id;
-        }
-
-        // Récupérer les questions correspondant aux IDs stockés dans $stockArr
-        $questions = Question::whereIn('id', $stockArr)->get();
-        //dd($questions);
-        // Récupérer toutes les questions
-        $allQuestions = Question::all();
-
-        // Rendre la vue avec les données nécessaires
-        return Inertia::render('Formulaires/Edit', [
-            'formulaire' => $formulaire,
-            'questions' => $questions,
-            'allQuestions' => $allQuestions,
-        ]);
-    }
 
 
 
