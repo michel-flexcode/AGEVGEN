@@ -47,6 +47,10 @@ Route::middleware([
         // Vous pouvez passer des données supplémentaires à votre composant si nécessaire
         return Inertia::render('Evaluation');
     })->name('Evaluation');
+    Route::get('/reponse', function () {
+        // Vous pouvez passer des données supplémentaires à votre composant si nécessaire
+        return Inertia::render('reponse');
+    })->name('reponse');
 
 
     Route::resource('/questions', QuestionController::class);
@@ -55,14 +59,7 @@ Route::middleware([
     Route::resource('/courses', CourseController::class);
     Route::resource('/sections', SectionController::class);
     Route::resource('/evaluations', EvaluationController::class);
-    //Route::get('/formulaires/{formulaireId}', [AnswerController::class, 'index']);
     Route::resource('/answers', AnswerController::class);
-    // Route::get('/formulaires/{formulaire}/show', [FormulaireController::class, 'show'])->name('formulaires.show');
-    // Route::get('/formulaires/{formulaire}', [FormulaireController::class, 'show'])->name('formulaires.show');
-    // Route::post('/formulaires/sendToStudents', [FormulaireController::class, 'sendToStudents'])->name('formulaires.sendToStudents');
-    // Route::post('/formulaires/sendToStudents', [FormulaireController::class, 'sendToStudents']);
-    // Route::get('/formulaires/{formulaire}', [FormulaireController::class, 'show'])->name('formulaires.show');
-    // Route::post('/formulaires/show', [FormulaireController::class, 'send'])->name('formulaires.send');
     Route::post('/formulaires/send', [FormulaireController::class, 'send'])->name('formulaires.send');
     Route::resource('/formulaires', FormulaireController::class);
     // Route::post('/formulaires', [FormulaireController::class, 'send']);
@@ -80,6 +77,11 @@ Route::middleware([
         ]);
     });
 
+    // Route::get('/answer/{token}', [AnswerController::class, 'nomDeTaMethode'])->name('answer');
+
+
+
+    // Route::get('/reponses', [AnswerController::class)->name('reponses'); // Remplacez "YourController" par le nom de votre contrôleur et "showReponses" par la méthode appropriée.
     // Route::post('/envoyer-formulaire', [FormulaireController::class, 'envoyerFormulaire']);
 
     // [21:34] Thibault Six

@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             SectionSeeder::class,
             StudentSeeder::class,
             TeacherSeeder::class,
-            EvaluationSeeder::class,
+            // EvaluationSeeder::class,
             StudentSectionSeeder::class,
             StudentCourseSeeder::class,
             SectionCourseSeeder::class,

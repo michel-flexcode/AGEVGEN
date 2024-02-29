@@ -51,18 +51,21 @@ class AnswerController extends Controller
     //     ]);
     // }
 
-    public function index($formulaireId)
+    // public function index($formulaireId)
+
+    public function index()
     {
-        // Récupérer le formulaire spécifique par son ID avec ses questions
-        $formulaire = Formulaire::findOrFail($formulaireId);
+        // // Récupérer le formulaire spécifique par son ID avec ses questions
+        // $formulaire = Formulaire::findOrFail($formulaireId);
 
         // Charger les questions liées à ce formulaire
-        $questions = Question::whereIn('id', $formulaire->questions()->pluck('id'))->orderBy('label', 'ASC')->get();
+        // $questions = Question::whereIn('id', $formulaire->questions()->pluck('id'))->orderBy('label', 'ASC')->get();
 
         // Retourner la vue avec les questions du formulaire
-        return Inertia::render('Answers/Index', [
-            'questions' => $questions,
-        ]);
+        // return Inertia::render('Answers/Index', [
+        //     'questions' => $questions,
+        // ]);
+        return Inertia::render('Answers/Index');
     }
 
 
