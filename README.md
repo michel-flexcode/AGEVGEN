@@ -97,6 +97,7 @@ MAIL_USERNAME=monadresse@mondomaine.com
 MAIL_PASSWORD=monmotdepasse   # Il est conseillé d'utiliser des variables d'environnement pour sécuriser cette valeur
 MAIL_ENCRYPTION=tls           # Ou ssl, selon ce que votre fournisseur exige
 MAIL_MAILER=smtp              # Adaptez à la méthode d'envoi que vous souhaitez utiliser
+```
 Description des paramètres :
 MAIL_DRIVER : Indique la méthode utilisée pour l'envoi d'e-mails (par exemple, smtp, sendmail, mailgun).
 MAIL_HOST : L'adresse du serveur de messagerie fournie par votre fournisseur.
