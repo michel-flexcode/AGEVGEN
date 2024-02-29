@@ -77,6 +77,33 @@ Générez une nouvelle clé d'application Laravel :
 Compilez les assets (CSS, JavaScript) pour le développement :
 `npm run dev` 
 
+# Configuration de l'envoi d'e-mails
+
+Pour permettre à notre application d'envoyer des e-mails, il est nécessaire de configurer correctement le fichier `.env` avec les informations de votre service de messagerie. Suivez les étapes ci-dessous pour effectuer cette configuration :
+
+## Étape 1 : Localisation du fichier `.env`
+
+Le fichier `.env` doit se trouver à la racine de votre projet. Si ce fichier n'existe pas, vous pouvez le créer en dupliquant et renommant le fichier `.env.example` fourni, le cas échéant.
+
+## Étape 2 : Configuration des paramètres d'envoi d'e-mails
+
+Ouvrez le fichier `.env` avec votre éditeur de texte préféré et ajustez les paramètres suivants selon les spécifications de votre fournisseur d'e-mails :
+
+```plaintext
+MAIL_DRIVER=smtp
+MAIL_HOST=ssl0.ovh.net        # Remplacez par l'adresse du serveur de votre fournisseur
+MAIL_PORT=587                 # Utilisez 465 pour SSL ou 587 pour TLS
+MAIL_USERNAME=monadresse@mondomaine.com
+MAIL_PASSWORD=monmotdepasse   # Il est conseillé d'utiliser des variables d'environnement pour sécuriser cette valeur
+MAIL_ENCRYPTION=tls           # Ou ssl, selon ce que votre fournisseur exige
+MAIL_MAILER=smtp              # Adaptez à la méthode d'envoi que vous souhaitez utiliser
+Description des paramètres :
+MAIL_DRIVER : Indique la méthode utilisée pour l'envoi d'e-mails (par exemple, smtp, sendmail, mailgun).
+MAIL_HOST : L'adresse du serveur de messagerie fournie par votre fournisseur.
+MAIL_PORT : Le port utilisé pour la connexion au serveur de messagerie (465 pour SSL, 587 pour TLS).
+MAIL_USERNAME & MAIL_PASSWORD : Vos identifiants pour l'authentification au serveur de messagerie.
+MAIL_ENCRYPTION : Le protocole de sécurisation de la connexion (ssl ou tls).
+MAIL_MAILER : Le système de gestion des e-mails utilisé (généralement smtp).
 
 ## About Laravel
 
