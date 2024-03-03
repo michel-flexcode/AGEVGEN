@@ -28,4 +28,10 @@ class Question extends Model
     {
         return $this->belongsToMany(Formulaire::class, 'formulaire_question');
     }
+
+    //01/03/2024
+    public function answers()
+    {
+        return $this->hasMany(Answer::class);
+    }
 }

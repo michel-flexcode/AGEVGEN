@@ -60,81 +60,78 @@ class FormulaireController extends Controller
         ]);
     }
 
-
-    // public function send(Request $request)
-    // {
-    //     // dd($request);
-    //     $formulaireNum = $request->input('id');
-
-    //     // $allStudents = Student::all();
-    //     $allStudents = Student::take(2)->get();
-    //     $allEmailStudents = $allStudents->pluck('email')->toArray();
-    //     // dd($allEmailStudents); // Vérifie si tu obtiens toutes les adresses e-mails
-
-    //     Mail::to($allEmailStudents)->send(new FormulaireSoumis($request->all()));
-
-    //     return Inertia::render('Dashboard');
-    // }
-
+    //29/02/2024 fonction bloc vide OK SI riend dans
     // public function send(Request $request)
     // {
     //     // Récupère l'ID du formulaire
     //     $formulaireNum = $request->input('id');
 
-    //     // Récupère les étudiants (dans cet exemple, on prend seulement les deux premiers)
-    //     // $allStudents = Student::all()
+    //     // $allStudents = Student::all();
     //     $allStudents = Student::take(2)->get();
-    //     // $dd($allStudents);
     //     $allEmailStudents = $allStudents->pluck('email');
 
-    //     // Parcours chaque étudiant
-    //     foreach ($allEmailStudents as $emailStudent) {
-    //         // Génère un token unique pour cet étudiant
-    //         $token = Str::random(32); // Utilise la classe Str de Laravel pour générer un token aléatoire
+    //     // Parcours chaque adresse e-mail
+    //     // foreach ($allEmailStudents as $email) {
+    //     //     // Construit l'URL vers le formulaire pour cet étudiant
+    //     //     // $url = route('formulaires.show', ['id' => $formulaireNum]); // Assurez-vous d'ajuster le nom de la route si nécessaire
 
-    //         // Stocke ce token dans la base de données pour cet étudiant
-    //         $emailStudent->update(['token' => $token]);
+    //     //     // Envoie un e-mail à cette adresse e-mail avec le lien vers le formulaire
+    //     //     Mail::to($email)->send(new FormulaireSoumis($request->all()));
+    //     // }
 
-    //         // Construit l'URL avec le token unique
-    //         $url = route('answer', ['token' => $token]);
-
-    //         // Envoie un e-mail à cet étudiant avec le lien vers le formulaire
-    //         Mail::to($emailStudent->email)->send(new FormulaireSoumis($url));
+    //     foreach ($allEmailStudents as $email) {
+    //         // Générer l'URL vers la page answers/index
+    //         $url = route('answers.index');
+    //         // dd($url);
+    //         // Envoie un e-mail à cette adresse e-mail avec le lien vers le formulaire
+    //         // Vous pouvez inclure le lien dans le corps de l'e-mail
+    //         Mail::to($email)->send(new FormulaireSoumis($url));
     //     }
 
     //     // Une fois que tous les e-mails ont été envoyés, tu peux rediriger l'utilisateur
     //     return Inertia::render('Dashboard');
     // }
 
+    //function 2
+    // public function send(Request $request)
+    // {
+    //     // Récupère l'ID du formulaire
+    //     $formulaireNum = $request->input('id');
+
+    //     // $allStudents = Student::all();
+    //     $allStudents = Student::take(2)->get();
+    //     $allEmailStudents = $allStudents->pluck('email');
+
+    //     foreach ($allEmailStudents as $email) {
+    //         // Générer l'URL vers la page answers/index
+    //         // $url = route('answers.index');
+    //         $url = route('answers.show', ['id' => $formulaireNum]);
+    //         // dd($url);
+
+    //         Mail::to($email)->send(new FormulaireSoumis($url));
+    //     }
+
+    //     // Une fois que tous les e-mails ont été envoyés, tu peux rediriger l'utilisateur
+    //     return Inertia::render('Dashboard');
+    // }
+
+    //function 3 29/02/2024 last function """workin""" A pu fonctionné avec <li><a href="{{ route('answers.index') }}">Cliquez sur ce lien</a></li>
     public function send(Request $request)
     {
-        // Récupère l'ID du formulaire
         $formulaireNum = $request->input('id');
 
-        // Récupère les adresses e-mail des étudiants (dans cet exemple, on prend seulement les deux premiers)
         // $allStudents = Student::all();
         $allStudents = Student::take(2)->get();
         $allEmailStudents = $allStudents->pluck('email');
 
-        // Parcours chaque adresse e-mail
-        // foreach ($allEmailStudents as $email) {
-        //     // Construit l'URL vers le formulaire pour cet étudiant
-        //     // $url = route('formulaires.show', ['id' => $formulaireNum]); // Assurez-vous d'ajuster le nom de la route si nécessaire
-
-        //     // Envoie un e-mail à cette adresse e-mail avec le lien vers le formulaire
-        //     Mail::to($email)->send(new FormulaireSoumis($request->all()));
-        // }
-
         foreach ($allEmailStudents as $email) {
             // Générer l'URL vers la page answers/index
-            $url = route('answers.index');
+            // $url = route('answers.index');
+            $url = route('answers.show', ['answer' => $formulaireNum]);
             // dd($url);
-            // Envoie un e-mail à cette adresse e-mail avec le lien vers le formulaire
-            // Vous pouvez inclure le lien dans le corps de l'e-mail
-            Mail::to($email)->send(new FormulaireSoumis($url));
-        }
 
-        // Une fois que tous les e-mails ont été envoyés, tu peux rediriger l'utilisateur
+            Mail::to($email)->send(new FormulaireSoumis($url, $formulaireNum));
+        }
         return Inertia::render('Dashboard');
     }
 
@@ -179,24 +176,24 @@ class FormulaireController extends Controller
 
 
 
-    public function mail()
-    {
-        try {
-            // Construire l'objet du mail avec les données nécessaires
-            $formData = [
-                // Ajoutez ici les données spécifiques que vous souhaitez inclure dans le mail
-            ];
+    // public function mail()
+    // {
+    //     try {
+    //         // Construire l'objet du mail avec les données nécessaires
+    //         $formData = [
+    //             // Ajoutez ici les données spécifiques que vous souhaitez inclure dans le mail
+    //         ];
 
-            // Envoyer l'e-mail à mrmichelcecere@gmail.com
-            Mail::to('mrmichelcecere@gmail.com')->send(new FormulaireSoumis($formData));
+    //         // Envoyer l'e-mail à mrmichelcecere@gmail.com
+    //         Mail::to('mrmichelcecere@gmail.com')->send(new FormulaireSoumis($formData));
 
-            // Si le mail est envoyé avec succès, vous pouvez renvoyer une réponse appropriée
-            return response()->json(['message' => 'Mail envoyé avec succès'], 200);
-        } catch (\Exception $e) {
-            // En cas d'erreur lors de l'envoi du mail, vous pouvez renvoyer un message d'erreur
-            return response()->json(['error' => 'Erreur lors de l\'envoi du mail : ' . $e->getMessage()], 500);
-        }
-    }
+    //         // Si le mail est envoyé avec succès, vous pouvez renvoyer une réponse appropriée
+    //         return response()->json(['message' => 'Mail envoyé avec succès'], 200);
+    //     } catch (\Exception $e) {
+    //         // En cas d'erreur lors de l'envoi du mail, vous pouvez renvoyer un message d'erreur
+    //         return response()->json(['error' => 'Erreur lors de l\'envoi du mail : ' . $e->getMessage()], 500);
+    //     }
+    //}
 
 
 
@@ -212,34 +209,6 @@ class FormulaireController extends Controller
             'questions' => $questions,
             // 'sendFormToStudents' => fn () => ['message' => 'coucou'],
         ]);
-    }
-
-
-
-    public function sendFormToStudents(Request $request)
-    {
-        echo 'SENDFORM';
-        //dd($request);
-        // Récupérer les données du formulaire depuis la requête
-        // $formData = $request->all();
-
-        // // Préparer le contenu de l'e-mail
-        // $emailContent = "Voici les données du formulaire : \n";
-        // foreach ($formData as $key => $value) {
-        //     $emailContent .= "$key: $value \n";
-        // }
-
-        // // Récupérer la liste des étudiants (par exemple depuis la base de données)
-        // $students = User::where('role', 'student')->get();
-
-        // // Envoyer l'e-mail à chaque étudiant
-        // foreach ($students as $student) {
-        //     // Envoyer l'e-mail
-        //     Mail::to($student->email)->send(new FormulaireNotification($emailContent));
-        // }
-
-        // Rediriger ou renvoyer une réponse appropriée
-        return redirect()->route('formulaires.index')->with('success', 'L\'e-mail a été envoyé à tous les étudiants avec succès.');
     }
 
     /**

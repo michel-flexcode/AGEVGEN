@@ -14,7 +14,7 @@ const props = defineProps({
     allQuestions: Array,
     allQuestions: Object,
 });
-console.log("Questions:", props.questions);
+//console.log("Questions:", props.questions);
 
 // const obj1 = props.questions[1];
 // const objtest = props.questions[1].id;

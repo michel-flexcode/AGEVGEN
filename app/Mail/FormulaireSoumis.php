@@ -14,15 +14,17 @@ class FormulaireSoumis extends Mailable
     use Queueable, SerializesModels;
 
     public $formData;
+    public $formulaireNum;
+
     /**
      * Create a new message instance.
      */
-    public function __construct($formData)
+    public function __construct($formData, $formulaireNum)
     {
         // dd($formData);
+        // dd($formulaireNum);
         $this->formData = $formData;
-
-        // dd($formData);
+        $this->formulaireNum = $formulaireNum;
     }
 
     /**
@@ -33,22 +35,10 @@ class FormulaireSoumis extends Mailable
     public function build()
     {
         return $this->subject('Nouveau formulaire soumis')
-            ->view('emails.formulaire-soumis')
-            ->with(['formData' => $this->formData]);
+            // ->view('emails.formulaire-soumis')
+            // ->with(['formData' => $this->formData]);
+            ->with(['formData' => $this->formData, 'formulaireNum' => $this->formulaireNum]);
     }
-
-    /**
-     * Get the message envelope.
-     */
-
-    // public function envelope(): Envelope
-    // {
-    //     return new Envelope(
-    //         // from: new Address('machin@gmail.com', 'John Lennon'),
-    //         from: 'machin@gmail.com',
-    //         subject: 'Contact',
-    //     );
-    // }
 
     /**
      * Get the message content definition.
