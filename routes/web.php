@@ -60,14 +60,18 @@ Route::middleware([
     Route::resource('/sections', SectionController::class);
     Route::resource('/evaluations', EvaluationController::class);
     Route::resource('/answers', AnswerController::class);
+    // Route::get('/answers/{answer}', [AnswerController::class, 'show'])->name('answers.show');
     Route::post('/formulaires/send', [FormulaireController::class, 'send'])->name('formulaires.send');
     Route::resource('/formulaires', FormulaireController::class);
-    // Route::post('/formulaires', [FormulaireController::class, 'send']);
     Route::get('/formulaires/mail', [FormulaireController::class, 'mail'])->name('formulaires.mail');
+
+
 
     //https://laravel.sillo.org/cours-laravel-10-les-bases-envoyer-un-email/ tutoriel
     Route::get('contact', [ContactController::class, 'create']);
     Route::post('contact', [ContactController::class, 'store']);
+
+    // Route::post('/formulaires', [FormulaireController::class, 'send']);
 
     Route::get('/test-contact', function () {
         return new App\Mail\Contact([

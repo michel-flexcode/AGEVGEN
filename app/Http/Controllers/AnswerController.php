@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Question;
+use App\Models\Answer;
 use App\Models\Formulaire;
+use App\Models\FormulaireQuestion;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -98,10 +100,77 @@ class AnswerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Question $question)
+
+    //  fonction 3 dysfonctionnel
+    // public function show(Answer $answer)
+    // {
+    //     // Récupérer le formulaire associé à cette réponse
+    //     $formulaire = $answer->formulaire;
+
+    //     if (!$formulaire) {
+    //         // Si aucun formulaire associé n'est trouvé, retourner une erreur ou une réponse appropriée
+    //         return response()->json(['error' => 'Formulaire non trouvé'], 404);
+    //     }
+
+    //     // Récupérer les questions associées à ce formulaire spécifique
+    //     $questions = $formulaire->questions;
+
+    //     // Retourner la vue avec les détails du formulaire et les questions associées
+    //     return Inertia::render('Answers/Show', [
+    //         'answer' => $answer,
+    //         'formulaire' => $formulaire,
+    //         'questions' => $questions,
+    //     ]);
+    // }
+
+
+    // Fonction 2 "no data mais mail ok"
+    // public function show(Answer $formulaire)
+    // {
+    //     // dd($formulaire);
+    //     // Récupérer les questions associées à ce formulaire spécifique
+    //     $questions = $formulaire->questions;
+    //     // dd($formulaire);
+    //     // Retourner la vue avec les détails du formulaire et les questions associées
+    //     return Inertia::render('Answers/Show', [
+    //         'formulaire' => $formulaire,
+    //         'questions' => $questions,
+    //         // 'sendFormToStudents' => fn () => ['message' => 'coucou'],
+    //     ]);
+    // }
+    // Fonction 4 bourrin "no data mais mail ok"
+    public function show()
     {
-        // useless
+        $questions = Question::all();
+        $formulaire = Formulaire::all();
+        $intermediaireQF = FormulaireQuestion::all();
+
+        return Inertia::render('Answers/Show', [
+            'formulaire' => $formulaire,
+            'questions' => $questions,
+            'intermediaireQF' => $intermediaireQF,
+        ]);
     }
+
+    //     public function show(Answer $answer)
+    // {
+    //     // Récupérer le formulaire associé à cette réponse
+    //     $formulaire = $answer->formulaire()->first(); // Utiliser first() pour obtenir le premier résultat
+
+    //     if (!$formulaire) {
+    //         // Si aucun formulaire associé n'est trouvé, retourner une erreur ou une réponse appropriée
+    //         return response()->json(['error' => 'Formulaire non trouvé'], 404);
+    //     }
+
+    //     // Récupérer les questions associées à ce formulaire spécifique
+    //     $questions = $formulaire->questions;
+
+    //     // Retourner la vue avec les détails du formulaire et les questions associées
+    //     return Inertia::render('Formulaires/Show', [
+    //         'formulaire' => $formulaire,
+    //         'questions' => $questions,
+    //     ]);
+    // }
 
     /**
      * Show the form for editing the specified resource.
