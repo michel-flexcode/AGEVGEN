@@ -120,8 +120,8 @@ class FormulaireController extends Controller
     {
         $formulaireNum = $request->input('id');
 
-        // $allStudents = Student::all();
-        $allStudents = Student::take(2)->get();
+        $allStudents = Student::all();
+        // $allStudents = Student::take(2)->get();
         $allEmailStudents = $allStudents->pluck('email');
 
         foreach ($allEmailStudents as $email) {
