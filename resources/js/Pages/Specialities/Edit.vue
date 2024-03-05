@@ -2,7 +2,7 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link, router, useForm } from "@inertiajs/vue3";
 import ActionMessage from "@/Components/ActionMessage.vue";
-import FormSpeciality from "@/Components/FormSpeciality.vue";
+// import FormSpeciality from "@/Components/FormSpeciality.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";

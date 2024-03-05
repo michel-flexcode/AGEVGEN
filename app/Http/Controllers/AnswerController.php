@@ -82,20 +82,85 @@ class AnswerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    // public function store(Request $request)
+    // {
+    //     // dd($request);
+    //     $tableauDegeulasse = $request->all(); // Obtenez tous les paramètres de la demande sous forme de tableau
+    // $parametres = [];
+
+    // foreach ($tableauDegeulasse as $key => $value) {
+    //     $parametres[$key] = $value;
+    // }
+
+    // // Maintenant, $parametres contient un tableau des paramètres de la demande
+    // $x = count($parametres); // Utilisez count() pour obtenir la longueur du tableau
+    // dd($x);
+  
+    //     $this->validate($request, [
+    //         'formulaire_id' => ['required', 'integer', 'exists:formulaires,id'],
+    //         'answers' => ['array'],
+    //         'answers.*.question_id' => ['required', 'integer', 'exists:questions,id'],
+    //         'answers.*.value' => ['required', 'string'],
+    //         'answers.*.type' => ['required', 'string'],
+    //     ]);
+
+    //     //boucle answers et enregistrer
+    //     // Créer le answers
+    //     $answer = Answer::create([
+    //         'formulaire_id' => $validatedData[''],
+    //         'questiid' => $validatedData[''],
+    //         'response' => $validatedData['value'],
+    //     ]);
+
+    //     // Initialiser un tableau pour stocker les données à insérer
+    //     $formulaireAnswers = [];
+
+    //     // Boucle sur chaque question
+    //     for ($i = 1; $i <= 50; $i++) {
+    //         // Vérifier si la question existe dans les données validées
+    //         if (isset($validatedData["question$i"])) {
+    //             // Ajouter la question au tableau des données à insérer
+    //             $formulaireAnswers[] = [
+    //                 'formulaire_id' => $answer->id,
+    //                 '' => $validatedData["$i"],
+    //             ];
+    //         }
+    //     }
+
+    //     // Insérer toutes les questions à la fin
+    //     Answers::insert($formulaireAnswers);
+
+    //     // Rediriger avec un message flash
+    //     return redirect()->route('formulaires.index')
+    //         ->with('success', 'Formulaire créé avec succès.');
+    // }   
+
+
     public function store(Request $request)
-    {
-        $this->validate($request, [
-            'label' => ['required', 'string', 'max:255'],
-            'type' => ['required', 'in:choix,libre'],
+{
+    // Valider les données de la demande
+    $validatedData = $request->validate([
+        'formulaire_id' => ['required', 'integer', 'exists:formulaires,id'],
+        'answers' => ['array'],
+        // 'answers.*.question_id' => ['required', 'integer', 'exists:questions,id'],
+        // 'answers.*.value' => ['required', 'string'],
+        // 'answers.*.type' => ['required', 'string'],
+    ]);
+
+    foreach ($validatedData['answers'] as $answerData) {
+        // Créer une réponse
+        $answer = Answer::create([
+            'formulaire_id' => $validatedData['formulaire_id'],
+            'question_id' => $answerData['question_id'],
+            'response' => $answerData['value'], 
         ]);
 
-        Question::create([
-            'label' => $request->input('label'),
-            'type' => $request->input('type'),
-        ]);
-
-        session()->flash('flash.banner', 'Merci de votre participation !!');
+        // Vous pouvez effectuer d'autres opérations nécessaires avec chaque réponse ici
     }
+
+    // Rediriger avec un message flash
+    return redirect()->route('formulaires.index')->with('success', 'Formulaire créé avec succès.');
+}
 
     /**
      * Display the specified resource.
@@ -139,16 +204,14 @@ class AnswerController extends Controller
     //     ]);
     // }
     // Fonction 4 bourrin "no data mais mail ok"
-    public function show()
+    public function show(int $id)
     {
-        $questions = Question::all();
-        $formulaire = Formulaire::all();
-        $intermediaireQF = FormulaireQuestion::all();
+        // dd($id);
+        $formulaire = Formulaire::find($id);
+        $formulaire->load("questions");
 
         return Inertia::render('Answers/Show', [
             'formulaire' => $formulaire,
-            'questions' => $questions,
-            'intermediaireQF' => $intermediaireQF,
         ]);
     }
 
