@@ -60,7 +60,6 @@ Route::middleware([
     Route::resource('/sections', SectionController::class);
     Route::resource('/evaluations', EvaluationController::class);
     Route::resource('/answers', AnswerController::class);
-    // Route::get('/answers/{answer}', [AnswerController::class, 'show'])->name('answers.show');
     Route::post('/formulaires/send', [FormulaireController::class, 'send'])->name('formulaires.send');
     Route::resource('/formulaires', FormulaireController::class);
     Route::get('/formulaires/mail', [FormulaireController::class, 'mail'])->name('formulaires.mail');

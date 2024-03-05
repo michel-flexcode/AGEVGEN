@@ -6,83 +6,37 @@ import FormSection from "@/Components/FormSection.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import TextInput from "@/Components/TextInput.vue";
-import axios from "axios";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 
 const props = defineProps({
     formulaire: Object,
-    questions: Object,
-    intermediaireQF: Object,
-    // answers: Objet,
 });
 
 const form = useForm({
     _method: "POST",
-    id: props.formulaire.id,
-    name: props.formulaire.name,
-    description: props.formulaire.description,
-    formulaire_questions: (() => {
-        const formulaireQuestions = {};
-        const numberOfQuestions = Math.min(props.questions.length, 50); // Limite à 50 questions
-        for (let i = 0; i < numberOfQuestions; i++) {
-            formulaireQuestions[`question${i + 1}`] = props.questions[i].id;
-        }
-        return formulaireQuestions;
-    })(),
+    formulaire_id: props.formulaire.id,
+    answers:[],
 });
 
-// Récupérer l'URL actuelle depuis le navigateur
-const currentUrl = window.location.href;
-const formAnswers = ref([]);
+onMounted(() => {
+for (let index = 0; index < props.formulaire.questions.length; index++) {
+    const question = props.formulaire.questions[index];
+    form.answers.push({
+        question_id:question.id,
+        value:null,
+        type:question.type,
+    })
+}
+// console.log(form.answers);
+})
 
-// Utilisez la méthode split() pour diviser l'URL en segments
-const segments = currentUrl.split("/");
+const sendForm = ()=>{
+form.post(route('answers.store'))
+}
 
-// Le dernier segment (segments[segments.length - 1]) contient le nombre
-var numero = segments[segments.length - 1];
-var numero = numero - 1;
-
-console.log("Numéro extrait :", numero); // Affiche 65 (dans votre exemple)
-
-console.log("Questions:", props.questions);
-console.log("Formulaire:", props.formulaire);
-console.log("intermediaireQF:", props.intermediaireQF);
-
-const obj1 = props.questions[1];
-const formID = props.formulaire[numero]?.id;
-const formName = props.formulaire[numero]?.name;
-const formDescription = props.formulaire[numero]?.description;
-
-//Il faut trouver TOUTES les questions liées au formulaire DONC importé la table intermédiaire ?
-
-const formQuestions = props.intermediaireQF
-    .filter((entry) => entry.formulaire_id === formID)
-    .map((entry) => {
-        // Récupérer les détails de la question à partir de props.questions
-        const questionID = entry.question_id;
-        const questionDetails = props.questions.find(
-            (question) => question.id === questionID
-        );
-        return questionDetails;
-    });
-
-console.log("Questions liées au formulaire:", formQuestions);
-
-console.log("hey");
-// console.log(obj1);
-console.log(formID);
-console.log(formName);
-console.log(formDescription);
-
-// Logique de recherche du formulaire et de ses questions grace à objtest
 </script>
 
 <template>
-    <div>
-        <p>L'URL actuelle est : {{ currentUrl }}</p>
-        <p>La valeur de objtest est : {{ formID }}</p>
-    </div>
     <AppLayout title="Sondages">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -102,7 +56,7 @@ console.log(formDescription);
 
                 <template #form>
                     <div
-                        v-for="(question, index) in formQuestions"
+                        v-for="(question, index) in formulaire.questions"
                         :key="question.id"
                         class="col-span-6 sm:col-span-4"
                     >
@@ -112,13 +66,13 @@ console.log(formDescription);
                         />
                         <div class="mt-1 block w-full">
                             <template v-if="question.type === 'libre'">
-                                <input
+                                <input v-if="form.answers[index]"
                                     type="text"
-                                    v-model="formAnswers[index]"
+                                    v-model="form.answers[index].value"
                                 />
                             </template>
                             <template v-else-if="question.type === 'choix'">
-                                <select v-model="formAnswers[index]">
+                                <select v-if="form.answers[index]" v-model="form.answers[index].value">
                                     <option
                                         v-for="(
                                             choice, choiceIndex
@@ -132,7 +86,7 @@ console.log(formDescription);
                             </template>
                         </div>
                         <InputError
-                            :message="form.errors[index]"
+                            :message="form.errors['answers.'+(index)+'.value']"
                             class="mt-2"
                         />
                     </div>
